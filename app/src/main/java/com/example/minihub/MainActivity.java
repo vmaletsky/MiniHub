@@ -1,6 +1,9 @@
 package com.example.minihub;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,9 +13,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,31 +32,34 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.left_drawer)
-    ListView mDrawerList;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private String[] mMenuTitles = new String[] {"Item1", "Item2", "Item3", "Item4"};
-
+    FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mMenuTitles));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectMenuItem(item);
+                return true;
+            }
+        });
         FeedFragment fragment = new FeedFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction()
                 .add(R.id.feed_container, fragment, null)
                 .commit();
     }
@@ -73,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
         return super.onOptionsItemSelected(item);
     }
 
+    private void selectMenuItem(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_repos : break;
+            case R.id.item_user_info : showUserInfo(); break;
+        }
+        mDrawerLayout.closeDrawers();
+    }
+
+    private void showUserInfo() {
+        UserInfoFragment userInfoFragment = new UserInfoFragment();
+        mFragmentManager.beginTransaction()
+                .replace(R.id.feed_container, userInfoFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
