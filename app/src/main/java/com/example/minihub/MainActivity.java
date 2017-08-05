@@ -2,31 +2,16 @@ package com.example.minihub;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements FeedFragment.OnFragmentInteractionListener {
     @BindView(R.id.drawer_layout)
@@ -38,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
     private ActionBarDrawerToggle mDrawerToggle;
 
     FragmentManager mFragmentManager;
+    private FeedFragment mFeedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +43,10 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
                 return true;
             }
         });
-        FeedFragment fragment = new FeedFragment();
+        mFeedFragment = new FeedFragment();
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction()
-                .add(R.id.feed_container, fragment, null)
+                .add(R.id.feed_container, mFeedFragment, null)
                 .commit();
     }
 
@@ -84,12 +70,27 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
         return super.onOptionsItemSelected(item);
     }
 
+    private void showFeed() {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.feed_container, mFeedFragment)
+                .commit();
+    }
+
     private void selectMenuItem(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_repos : break;
+            case R.id.item_feed: showFeed(); break;
+            case R.id.item_repos : showRepositoriesList(); break;
             case R.id.item_user_info : showUserInfo(); break;
         }
         mDrawerLayout.closeDrawers();
+    }
+
+    private void showRepositoriesList() {
+        RepositoriesFragment repositoriesFragment = new RepositoriesFragment();
+        mFragmentManager.beginTransaction()
+                .replace(R.id.feed_container, repositoriesFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showUserInfo() {
