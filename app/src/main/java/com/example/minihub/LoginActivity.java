@@ -1,6 +1,7 @@
 package com.example.minihub;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -80,19 +81,15 @@ public class LoginActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.v(TAG, e.getMessage());
             }
-              /*  LoginService loginService =
-                        ServiceGenerator.createService(LoginService.class, CLIENT_ID, CLIENT_SECRET);
-                Call<AccessToken> call = loginService.getAccessToken(CLIENT_ID, CLIENT_SECRET, code);
-                token = call.execute().body();
-                Log.v(TAG, token.toString());*/
-
 
             return null;
         }
 
         @Override
         protected void onPostExecute(AccessToken accessToken) {
-            Toast.makeText(LoginActivity.this, token.getAccessToken(), Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("access_token", token.getAccessToken());
         }
     }
 }
