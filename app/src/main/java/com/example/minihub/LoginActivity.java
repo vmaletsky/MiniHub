@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("access_token", token.getAccessToken());
+            editor.commit();
         }
     }
 }
