@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,11 +64,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public class AuthAsyncTask extends AsyncTask<String, Void, AccessToken> {
-        AccessToken token;
         String TAG = this.getClass().getSimpleName();
         @Override
         protected AccessToken doInBackground(String... params) {
-
+            AccessToken token = null;
             String code = params[0];
             Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl("https://github.com")
@@ -82,15 +82,18 @@ public class LoginActivity extends AppCompatActivity {
                 Log.v(TAG, e.getMessage());
             }
 
-            return null;
+            return token;
         }
 
         @Override
         protected void onPostExecute(AccessToken accessToken) {
-            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("access_token", token.getAccessToken());
-            editor.commit();
+            if (accessToken != null) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(getString(R.string.access_token_pref_id), accessToken.getAccessToken()).apply();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }

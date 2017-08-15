@@ -1,6 +1,9 @@
 package com.example.minihub;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
             case R.id.item_feed: showFeed(); break;
             case R.id.item_repos : showRepositoriesList(); break;
             case R.id.item_user_info : showUserInfo(); break;
+            case R.id.item_log_out: logout(); break;
         }
         mDrawerLayout.closeDrawers();
     }
@@ -99,6 +103,15 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
                 .replace(R.id.feed_container, userInfoFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void logout() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(getString(R.string.access_token_pref_id))
+                .apply();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
