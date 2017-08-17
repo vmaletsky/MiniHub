@@ -13,6 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.minihub.auth.LoginActivity;
+import com.example.minihub.feed.FeedFragment;
+import com.example.minihub.user_info.UserInfoFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

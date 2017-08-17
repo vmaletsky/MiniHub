@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.minihub.UserInfoFragment">
+    tools:context="com.example.minihub.user_info.UserInfoFragment">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="72dp"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/user_nickname"
+        android:id="@+id/user_login"
         android:text="johndoe1"
         android:layout_toRightOf="@id/user_pic"
         android:layout_below="@id/user_name"/>

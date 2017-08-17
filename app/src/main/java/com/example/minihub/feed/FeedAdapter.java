@@ -1,11 +1,12 @@
-package com.example.minihub;
+package com.example.minihub.feed;
 
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.minihub.R;
 
 import java.util.List;
 

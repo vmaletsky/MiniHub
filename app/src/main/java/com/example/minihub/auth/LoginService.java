@@ -1,4 +1,6 @@
-package com.example.minihub;
+package com.example.minihub.auth;
+
+import com.example.minihub.auth.AccessToken;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -18,5 +20,5 @@ public interface LoginService {
             @Field("client_id") String clientId,
             @Field("client_secret") String clientSecret,
             @Field("code") String code
-            );
+    );
 }

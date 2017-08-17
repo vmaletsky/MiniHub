@@ -1,4 +1,4 @@
-package com.example.minihub;
+package com.example.minihub.feed;
 
 /**
  * Created by v.maletskiy on 7/18/2017.

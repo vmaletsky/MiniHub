@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.minihub.auth.LoginActivity;
+
 public class MainEmptyActivity extends AppCompatActivity {
     String TAG = getClass().getSimpleName();
 
