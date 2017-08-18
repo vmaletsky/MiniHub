@@ -1,8 +1,11 @@
 package com.example.minihub.feed;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,23 +15,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.minihub.GithubService;
 import com.example.minihub.R;
+import com.example.minihub.ServiceGenerator;
+import com.example.minihub.user_info.UserInfoFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Response;
 import timber.log.Timber;
 
+import static com.example.minihub.ServiceGenerator.createService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FeedFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class FeedFragment extends Fragment {
     String TAG = getClass().getSimpleName();
 
@@ -41,20 +44,6 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FeedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FeedFragment newInstance(String param1, String param2) {
-        FeedFragment fragment = new FeedFragment();
-        return fragment;
     }
 
     @Override
@@ -97,15 +86,12 @@ public class FeedFragment extends Fragment {
                 layoutManager.getOrientation());
         mFeedList.addItemDecoration(dividerItemDecoration);
         mFeedList.setAdapter(mFeedAdapter);
+
+        EventsAsyncTask task = new EventsAsyncTask();
+        task.execute();
+
         Timber.d("Adapter size: " + mFeedAdapter.getItemCount());
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -138,5 +124,24 @@ public class FeedFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    class EventsAsyncTask extends AsyncTask<Void, Void, FeedEvent[]> {
+        @Override
+        protected FeedEvent[] doInBackground(Void... params) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(FeedFragment.this.getActivity());
+            String authToken = sp.getString(getString(R.string.access_token_pref_id), null);
+            GithubService service = ServiceGenerator.createService(GithubService.class, authToken);
+
+            try {
+                Response<FeedEvent[]> response = service.getPublicEvents().execute();
+                Log.v(TAG, "Received events : " + String.valueOf(response.body().length));
+            } catch (IOException e) {
+                Log.v(TAG, e.getMessage());
+            }
+
+            return null;
+        }
     }
 }

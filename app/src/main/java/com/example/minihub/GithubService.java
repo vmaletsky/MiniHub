@@ -1,5 +1,6 @@
 package com.example.minihub;
 
+import com.example.minihub.feed.FeedEvent;
 import com.example.minihub.user_info.User;
 
 import retrofit2.Call;
@@ -14,4 +15,7 @@ public interface GithubService {
     @Headers("Accept: application/vnd.github.v3+json")
     @GET("/user")
     Call<User> getAuthenticatedUser();
+
+    @GET("/events")
+    Call<FeedEvent[]> getPublicEvents();
 }
