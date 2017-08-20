@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import com.example.minihub.GithubService;
 import com.example.minihub.R;
 import com.example.minihub.ServiceGenerator;
-import com.example.minihub.user_info.UserInfoFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,18 +67,6 @@ public class FeedFragment extends Fragment {
         mFeedList.setHasFixedSize(true);
         ArrayList<FeedEvent> eventsList = new ArrayList<>();
         FeedEvent event1 = new FeedEvent();
-        event1.name = "Event1";
-        event1.time = "Today";
-        FeedEvent event2 = new FeedEvent();
-        event2.name = "Event2";
-        event2.time = "Today";
-        FeedEvent event3 = new FeedEvent();
-        event3.time = "Today";
-        event3.name = "Event3";
-
-        eventsList.add(event1);
-        eventsList.add(event2);
-        eventsList.add(event3);
 
         mFeedAdapter = new FeedAdapter(eventsList);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mFeedList.getContext(),
@@ -135,8 +122,8 @@ public class FeedFragment extends Fragment {
             GithubService service = ServiceGenerator.createService(GithubService.class, authToken);
 
             try {
-                Response<FeedEvent[]> response = service.getPublicEvents().execute();
-                Log.v(TAG, "Received events : " + String.valueOf(response.body().length));
+                Response<FeedEvent[]> response = service.getUserEvents().execute();
+                Log.v(TAG, "Received events : " + response.raw().toString());
             } catch (IOException e) {
                 Log.v(TAG, e.getMessage());
             }

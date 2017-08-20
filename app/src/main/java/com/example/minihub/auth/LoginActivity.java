@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                 LoginService service = retrofit.create(LoginService.class);
                 Call<AccessToken> call = service.getAccessToken(CLIENT_ID, CLIENT_SECRET, code);
                 token = call.execute().body();
-                Log.v(TAG, token.getAccessToken());
             } catch (IOException e) {
                 Log.v(TAG, e.getMessage());
             }

@@ -16,5 +16,5 @@ public class FeedEvent {
     public User actor;
 
     @SerializedName("id")
-    public int id;
+    public String id;
 }

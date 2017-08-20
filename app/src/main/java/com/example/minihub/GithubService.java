@@ -1,6 +1,7 @@
 package com.example.minihub;
 
 import com.example.minihub.feed.FeedEvent;
+import com.example.minihub.feed.Repository;
 import com.example.minihub.user_info.User;
 
 import retrofit2.Call;
@@ -16,6 +17,12 @@ public interface GithubService {
     @GET("/user")
     Call<User> getAuthenticatedUser();
 
-    @GET("/events")
-    Call<FeedEvent[]> getPublicEvents();
+    @GET("/users/vmaletsky/received_events") // TODO: make username parameter
+    Call<FeedEvent[]> getUserEvents();
+
+    @GET("/user/repos")
+    Call<Repository[]> getUserRepos();
+
+    @GET("/user/subscriptions")
+    Call<Repository[]> getWatchedRepos();
 }

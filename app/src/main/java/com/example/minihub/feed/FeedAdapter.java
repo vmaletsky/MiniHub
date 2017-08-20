@@ -32,9 +32,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        FeedEvent event = mEventsList.get(position);
-        holder.eventTextView.setText(event.name);
-        holder.timeTextView.setText(event.time);
+
     }
 
     @Override
