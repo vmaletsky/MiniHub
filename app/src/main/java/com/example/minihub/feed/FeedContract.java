@@ -9,10 +9,12 @@ import com.example.minihub.BaseView;
 
 public interface FeedContract {
     interface View extends BaseView<Presenter> {
+        void showEvents();
+
 
     }
 
     interface Presenter extends BasePresenter {
-
+        void getUserEvents();
     }
 }

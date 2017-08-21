@@ -1,6 +1,6 @@
 package com.example.minihub;
 
-import com.example.minihub.feed.FeedEvent;
+import com.example.minihub.data.FeedEvent;
 import com.example.minihub.data.Repository;
 import com.example.minihub.data.User;
 

@@ -1,4 +1,4 @@
-package com.example.minihub;
+package com.example.minihub.user_repos;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -10,13 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.minihub.GithubService;
+import com.example.minihub.R;
+import com.example.minihub.ServiceGenerator;
 import com.example.minihub.data.Repository;
 
 import java.io.IOException;
 
 import retrofit2.Response;
 
-public class RepositoriesFragment extends Fragment {
+public class UserReposFragment extends Fragment {
 
     String TAG = getClass().getSimpleName();
 
@@ -32,7 +35,7 @@ public class RepositoriesFragment extends Fragment {
     class ReposAsyncTask extends AsyncTask<Void, Void, Repository[]> {
         @Override
         protected Repository[] doInBackground(Void... params) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(RepositoriesFragment.this.getActivity());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(UserReposFragment.this.getActivity());
             String authToken = sp.getString(getString(R.string.access_token_pref_id), null);
             GithubService service = ServiceGenerator.createService(GithubService.class, authToken);
             Repository[] repos = null;

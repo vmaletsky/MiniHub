@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.minihub.GithubService;
 import com.example.minihub.R;
 import com.example.minihub.ServiceGenerator;
+import com.example.minihub.data.FeedEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +40,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     public FeedAdapter mFeedAdapter;
 
     public FeedContract.Presenter mPresenter;
-
-    private OnFragmentInteractionListener mListener;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -83,40 +82,8 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void setPresenter(FeedContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
 

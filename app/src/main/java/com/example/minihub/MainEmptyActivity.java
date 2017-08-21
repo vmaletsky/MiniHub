@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.minihub.auth.LoginActivity;
+import com.example.minihub.feed.FeedActivity;
 
 public class MainEmptyActivity extends AppCompatActivity {
     String TAG = getClass().getSimpleName();
@@ -18,7 +19,7 @@ public class MainEmptyActivity extends AppCompatActivity {
         Intent intent;
         if (userLoggedIn()) {
             Log.v(TAG, "User is logged in");
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, FeedActivity.class);
         } else {
             Log.v(TAG, "User is not logged in");
             intent = new Intent(this, LoginActivity.class);

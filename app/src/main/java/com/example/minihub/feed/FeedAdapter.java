@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.minihub.R;
+import com.example.minihub.data.FeedEvent;
 
 import java.util.List;
 

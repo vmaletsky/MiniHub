@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.minihub.MainActivity;
+import com.example.minihub.feed.FeedActivity;
 import com.example.minihub.R;
 import com.example.minihub.data.AccessToken;
 
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(getString(R.string.access_token_pref_id), accessToken.getAccessToken()).apply();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, FeedActivity.class);
                 startActivity(intent);
             }
         }

@@ -1,4 +1,4 @@
-package com.example.minihub;
+package com.example.minihub.feed;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,26 +13,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.minihub.R;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.feed.FeedFragment;
 import com.example.minihub.user_info.UserInfoFragment;
+import com.example.minihub.user_repos.UserReposFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements FeedFragment.OnFragmentInteractionListener {
+public class FeedActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    public DrawerLayout mDrawerLayout;
 
     @BindView(R.id.navigation_view)
-    NavigationView mNavigationView;
+    public NavigationView mNavigationView;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
     FragmentManager mFragmentManager;
     private FeedFragment mFeedFragment;
 
-    @Override
+    private FeedPresenter mFeedPresenter;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
         });
         mFeedFragment = new FeedFragment();
         mFragmentManager = getSupportFragmentManager();
+
+        mFeedPresenter = new FeedPresenter();
+
         mFragmentManager.beginTransaction()
                 .add(R.id.feed_container, mFeedFragment, null)
                 .commit();
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
     }
 
     private void showRepositoriesList() {
-        RepositoriesFragment repositoriesFragment = new RepositoriesFragment();
+        UserReposFragment repositoriesFragment = new UserReposFragment();
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, repositoriesFragment)
                 .addToBackStack(null)
@@ -109,17 +115,5 @@ public class MainActivity extends AppCompatActivity implements FeedFragment.OnFr
                 .commit();
     }
 
-    private void logout() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove(getString(R.string.access_token_pref_id))
-                .apply();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
