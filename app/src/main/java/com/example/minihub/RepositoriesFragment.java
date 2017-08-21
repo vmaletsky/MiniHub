@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.minihub.feed.Repository;
+import com.example.minihub.data.Repository;
 
 import java.io.IOException;
 

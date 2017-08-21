@@ -1,4 +1,4 @@
-package com.example.minihub.auth;
+package com.example.minihub.data;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,8 +1,8 @@
 package com.example.minihub;
 
 import com.example.minihub.feed.FeedEvent;
-import com.example.minihub.feed.Repository;
-import com.example.minihub.user_info.User;
+import com.example.minihub.data.Repository;
+import com.example.minihub.data.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

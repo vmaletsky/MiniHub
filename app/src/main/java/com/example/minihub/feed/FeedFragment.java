@@ -31,13 +31,14 @@ import static com.example.minihub.ServiceGenerator.createService;
 
 
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements FeedContract.View {
     String TAG = getClass().getSimpleName();
 
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
 
+    public FeedContract.Presenter mPresenter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -96,6 +97,11 @@ public class FeedFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void setPresenter(FeedContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     /**

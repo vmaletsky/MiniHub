@@ -1,6 +1,6 @@
 package com.example.minihub.feed;
 
-import com.example.minihub.user_info.User;
+import com.example.minihub.data.User;
 import com.google.gson.annotations.SerializedName;
 
 /**

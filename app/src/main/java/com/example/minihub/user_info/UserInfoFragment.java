@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.minihub.*;
 import com.example.minihub.R;
+import com.example.minihub.data.User;
 
 import java.io.IOException;
 
