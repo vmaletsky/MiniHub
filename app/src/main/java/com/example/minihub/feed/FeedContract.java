@@ -11,10 +11,17 @@ public interface FeedContract {
     interface View extends BaseView<Presenter> {
         void showEvents();
 
+        void removeAccessToken();
+
+        void openLoginActivity();
+
+        String getAccessToken();
 
     }
 
     interface Presenter extends BasePresenter {
         void getUserEvents();
+
+        void logout();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.minihub.feed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import com.example.minihub.GithubService;
 import com.example.minihub.R;
 import com.example.minihub.ServiceGenerator;
+import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.data.FeedEvent;
 
 import java.io.IOException;
@@ -62,21 +64,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
                 Log.v(tag, message);
             }
         });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mFeedList.setLayoutManager(layoutManager);
-        mFeedList.setHasFixedSize(true);
-        ArrayList<FeedEvent> eventsList = new ArrayList<>();
-        FeedEvent event1 = new FeedEvent();
-
-        mFeedAdapter = new FeedAdapter(eventsList);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mFeedList.getContext(),
-                layoutManager.getOrientation());
-        mFeedList.addItemDecoration(dividerItemDecoration);
-        mFeedList.setAdapter(mFeedAdapter);
-
-        EventsAsyncTask task = new EventsAsyncTask();
-        task.execute();
-
         Timber.d("Adapter size: " + mFeedAdapter.getItemCount());
         return view;
     }
@@ -87,21 +74,38 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
 
-    class EventsAsyncTask extends AsyncTask<Void, Void, FeedEvent[]> {
-        @Override
-        protected FeedEvent[] doInBackground(Void... params) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(FeedFragment.this.getActivity());
-            String authToken = sp.getString(getString(R.string.access_token_pref_id), null);
-            GithubService service = ServiceGenerator.createService(GithubService.class, authToken);
+    @Override
+    public void showEvents() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mFeedList.setLayoutManager(layoutManager);
+        mFeedList.setHasFixedSize(true);
+        ArrayList<FeedEvent> eventsList = new ArrayList<>();
+        mFeedAdapter = new FeedAdapter(eventsList);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mFeedList.getContext(),
+                layoutManager.getOrientation());
+        mFeedList.addItemDecoration(dividerItemDecoration);
+        mFeedList.setAdapter(mFeedAdapter);
+        mPresenter.getUserEvents();
+    }
 
-            try {
-                Response<FeedEvent[]> response = service.getUserEvents().execute();
-                Log.v(TAG, "Received events : " + response.raw().toString());
-            } catch (IOException e) {
-                Log.v(TAG, e.getMessage());
-            }
+    @Override
+    public void removeAccessToken() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(getString(R.string.access_token_pref_id))
+                .apply();
+    }
 
-            return null;
-        }
+    @Override
+    public void openLoginActivity() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        getActivity().startActivity(intent);
+    }
+
+    @Override
+    public String getAccessToken() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String accessToken = sp.getString(getString(R.string.access_token_pref_id), null);
+        return accessToken;
     }
 }

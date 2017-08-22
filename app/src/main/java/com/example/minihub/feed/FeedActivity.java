@@ -34,7 +34,6 @@ public class FeedActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private FeedFragment mFeedFragment;
 
-    private FeedPresenter mFeedPresenter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +54,6 @@ public class FeedActivity extends AppCompatActivity {
         });
         mFeedFragment = new FeedFragment();
         mFragmentManager = getSupportFragmentManager();
-
-        mFeedPresenter = new FeedPresenter();
 
         mFragmentManager.beginTransaction()
                 .add(R.id.feed_container, mFeedFragment, null)
