@@ -33,12 +33,6 @@ public class FeedPresenter implements  FeedContract.Presenter {
     private FeedContract.View mFeedView;
 
     @Override
-    public void logout() {
-        mFeedView.removeAccessToken();
-        mFeedView.openLoginActivity();
-    }
-
-    @Override
     public void start() {
 
     }

@@ -1,4 +1,4 @@
-package com.example.minihub.feed;
+package com.example.minihub.navigation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,7 +22,7 @@ import com.example.minihub.user_repos.UserReposFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FeedActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements NavigationContract.View {
     @BindView(R.id.drawer_layout)
     public DrawerLayout mDrawerLayout;
 
@@ -34,6 +34,7 @@ public class FeedActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private FeedFragment mFeedFragment;
 
+    private NavigationContract.Presenter mPresenter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,8 @@ public class FeedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showFeed() {
+    @Override
+    public void showFeed() {
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, mFeedFragment)
                 .commit();
@@ -91,12 +93,13 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.item_feed: showFeed(); break;
             case R.id.item_repos : showRepositoriesList(); break;
             case R.id.item_user_info : showUserInfo(); break;
-            case R.id.item_log_out: logout(); break;
+            case R.id.item_log_out: mPresenter.logout(); break;
         }
         mDrawerLayout.closeDrawers();
     }
 
-    private void showRepositoriesList() {
+    @Override
+    public void showRepositoriesList() {
         UserReposFragment repositoriesFragment = new UserReposFragment();
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, repositoriesFragment)
@@ -104,7 +107,8 @@ public class FeedActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void showUserInfo() {
+    @Override
+    public void showUserInfo() {
         UserInfoFragment userInfoFragment = new UserInfoFragment();
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, userInfoFragment)
@@ -113,4 +117,14 @@ public class FeedActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void setPresenter(NavigationContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void openLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
