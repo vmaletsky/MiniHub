@@ -12,6 +12,7 @@ import com.example.minihub.R;
 import com.example.minihub.ServiceGenerator;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.data.FeedEvent;
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.io.IOException;
 
@@ -22,15 +23,15 @@ import retrofit2.Response;
  * Created by v.maletskiy on 8/21/2017.
  */
 
-public class FeedPresenter implements  FeedContract.Presenter {
+public class FeedPresenter extends MvpBasePresenter<FeedView> {
     private String TAG = getClass().getSimpleName();
 
-    public FeedPresenter(@NonNull FeedContract.View feedView,
+    public FeedPresenter(@NonNull FeedView feedView,
                          @NonNull SharedPreferences sharedPreferences) {
         this.mFeedView = feedView;
     }
 
-    private FeedContract.View mFeedView;
+    private FeedView mFeedView;
 
     @Override
     public void start() {

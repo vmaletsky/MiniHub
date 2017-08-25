@@ -64,7 +64,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
                 Log.v(tag, message);
             }
         });
-        Timber.d("Adapter size: " + mFeedAdapter.getItemCount());
         return view;
     }
 
@@ -73,6 +72,12 @@ public class FeedFragment extends Fragment implements FeedContract.View {
         mPresenter = presenter;
     }
 
+    @Override
+    public String getAccessToken() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sp.getString(getString(R.string.access_token_pref_id), null);
+        return token;
+    }
 
     @Override
     public void showEvents() {
@@ -88,24 +93,4 @@ public class FeedFragment extends Fragment implements FeedContract.View {
         mPresenter.getUserEvents();
     }
 
-    @Override
-    public void removeAccessToken() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove(getString(R.string.access_token_pref_id))
-                .apply();
-    }
-
-    @Override
-    public void openLoginActivity() {
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        getActivity().startActivity(intent);
-    }
-
-    @Override
-    public String getAccessToken() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String accessToken = sp.getString(getString(R.string.access_token_pref_id), null);
-        return accessToken;
-    }
 }

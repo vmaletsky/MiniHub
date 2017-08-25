@@ -116,6 +116,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationC
                 .commit();
     }
 
+    public void removeAccessToken() {
+
+    }
+
 
     @Override
     public void setPresenter(NavigationContract.Presenter presenter) {
