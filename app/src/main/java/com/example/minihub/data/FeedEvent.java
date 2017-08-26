@@ -17,4 +17,10 @@ public class FeedEvent {
 
     @SerializedName("id")
     public String id;
+
+    @SerializedName("type")
+    public String type;
+
+    @SerializedName("repo")
+    public Repository repo;
 }

@@ -21,9 +21,11 @@ import com.example.minihub.R;
 import com.example.minihub.ServiceGenerator;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.data.FeedEvent;
+import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,23 +36,28 @@ import static com.example.minihub.ServiceGenerator.createService;
 
 
 
-public class FeedFragment extends Fragment implements FeedContract.View {
+public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implements FeedView {
     String TAG = getClass().getSimpleName();
 
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
 
-    public FeedContract.Presenter mPresenter;
-
     public FeedFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public FeedPresenter createPresenter() {
+        return new FeedPresenter();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,8 +75,9 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void setPresenter(FeedContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void onResume() {
+        presenter.getEvents();
+        super.onResume();
     }
 
     @Override
@@ -78,6 +86,13 @@ public class FeedFragment extends Fragment implements FeedContract.View {
         String token = sp.getString(getString(R.string.access_token_pref_id), null);
         return token;
     }
+
+    @Override
+    public void setData(List<FeedEvent> events) {
+        mFeedAdapter.setEvents(events);
+        mFeedAdapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void showEvents() {
@@ -90,7 +105,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
                 layoutManager.getOrientation());
         mFeedList.addItemDecoration(dividerItemDecoration);
         mFeedList.setAdapter(mFeedAdapter);
-        mPresenter.getUserEvents();
     }
 
 }

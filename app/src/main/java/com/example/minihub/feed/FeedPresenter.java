@@ -15,6 +15,8 @@ import com.example.minihub.data.FeedEvent;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -26,38 +28,25 @@ import retrofit2.Response;
 public class FeedPresenter extends MvpBasePresenter<FeedView> {
     private String TAG = getClass().getSimpleName();
 
-    public FeedPresenter(@NonNull FeedView feedView,
-                         @NonNull SharedPreferences sharedPreferences) {
-        this.mFeedView = feedView;
-    }
+    EventsAsyncTask task;
 
-    private FeedView mFeedView;
 
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void getUserEvents() {
-        EventsAsyncTask task = new EventsAsyncTask();
-        task.execute();
-    }
-
-    class EventsAsyncTask extends AsyncTask<Void, Void, FeedEvent[]> {
-        @Override
-        protected FeedEvent[] doInBackground(Void... params) {
-            String authToken = mFeedView.getAccessToken();
-            GithubService service = ServiceGenerator.createService(GithubService.class, authToken);
-
-            try {
-                Response<FeedEvent[]> response = service.getUserEvents().execute();
-                Log.v(TAG, "Received events : " + response.raw().toString());
-            } catch (IOException e) {
-                Log.v(TAG, e.getMessage());
+    public void getEvents() {
+        String token = getView().getAccessToken();
+        task = new EventsAsyncTask(new EventsAsyncTask.FeedTaskListener() {
+            @Override
+            public void onFeedReceived(List<FeedEvent> events) {
+                if (isViewAttached()) {
+                    getView().setData(events);
+                }
             }
+        });
+        task.execute(token);
+        getView().showEvents();
+    }
 
-            return null;
-        }
+    @Override
+    public void detachView(boolean retainInstance) {
+        task.cancel(true);
     }
 }
