@@ -1,13 +1,8 @@
 package com.example.minihub.feed;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,23 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.minihub.GithubService;
 import com.example.minihub.R;
-import com.example.minihub.ServiceGenerator;
-import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.data.FeedEvent;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Response;
 import timber.log.Timber;
 
-import static com.example.minihub.ServiceGenerator.createService;
+import static com.example.minihub.network.ServiceGenerator.createService;
 
 
 
@@ -95,7 +85,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
 
 
     @Override
-    public void showEvents() {
+    public void showEvents() { // TODO: fix it
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mFeedList.setLayoutManager(layoutManager);
         mFeedList.setHasFixedSize(true);

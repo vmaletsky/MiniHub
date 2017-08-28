@@ -1,32 +1,23 @@
 package com.example.minihub.user_repos;
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.BinderThread;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.minihub.GithubService;
 import com.example.minihub.R;
-import com.example.minihub.ServiceGenerator;
 import com.example.minihub.data.Repository;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Response;
 
 public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView {
 

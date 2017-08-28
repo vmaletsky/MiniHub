@@ -4,4 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="access_token_pref_id">access_token</string>
+    <string name="current_user_name">current_user_name</string>
+    <string name="current_user_login">current_user_login</string>
+    <string name="current_user_avatar_url">current_user_avatar_url</string>
 </resources>

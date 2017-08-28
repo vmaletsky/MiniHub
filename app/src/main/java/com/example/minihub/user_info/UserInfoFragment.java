@@ -79,6 +79,19 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
     }
 
     @Override
+    public User getCurrentUser() { // TODO: this is bad
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String userName = sp.getString(getString(R.string.current_user_name), null);
+        String userLogin = sp.getString(getString(R.string.current_user_login), null);
+        String userAvatar = sp.getString(getString(R.string.current_user_avatar_url), null);
+        User user = new User();
+        user.avatarUrl = userAvatar;
+        user.login = userLogin;
+        user.name = userName;
+        return user;
+    }
+
+    @Override
     public String getAccessToken() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = sp.getString(getString(R.string.access_token_pref_id), null);

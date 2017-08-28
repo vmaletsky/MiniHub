@@ -1,4 +1,4 @@
-package com.example.minihub.auth;
+package com.example.minihub.network;
 
 import java.io.IOException;
 

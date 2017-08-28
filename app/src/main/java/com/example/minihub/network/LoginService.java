@@ -1,4 +1,4 @@
-package com.example.minihub.auth;
+package com.example.minihub.network;
 
 import com.example.minihub.data.AccessToken;
 

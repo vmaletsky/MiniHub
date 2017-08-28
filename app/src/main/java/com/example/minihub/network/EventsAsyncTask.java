@@ -1,10 +1,8 @@
-package com.example.minihub.feed;
+package com.example.minihub.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.minihub.GithubService;
-import com.example.minihub.ServiceGenerator;
 import com.example.minihub.data.FeedEvent;
 
 import java.io.IOException;
@@ -17,7 +15,7 @@ import retrofit2.Response;
  * Created by volod on 8/26/2017.
  */
 
-public class EventsAsyncTask extends AsyncTask<String, Void, FeedEvent[]> {
+class EventsAsyncTask extends AsyncTask<String, Void, FeedEvent[]> {
 
     public EventsAsyncTask(FeedTaskListener listener) {
         this.listener = listener;
@@ -26,7 +24,7 @@ public class EventsAsyncTask extends AsyncTask<String, Void, FeedEvent[]> {
     public FeedTaskListener listener;
 
     public interface FeedTaskListener {
-        public void onFeedReceived(List<FeedEvent> events);
+        void onFeedReceived(List<FeedEvent> events);
     }
 
     String TAG = getClass().getSimpleName();
@@ -38,7 +36,6 @@ public class EventsAsyncTask extends AsyncTask<String, Void, FeedEvent[]> {
         try {
             Response<FeedEvent[]> response = service.getUserEvents().execute();
             events = response.body();
-            Log.v(TAG, "Received events : " + response.raw().toString());
         } catch (IOException e) {
             Log.v(TAG, e.getMessage());
         }

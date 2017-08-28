@@ -1,4 +1,4 @@
-package com.example.minihub;
+package com.example.minihub.network;
 
 import com.example.minihub.data.FeedEvent;
 import com.example.minihub.data.Repository;

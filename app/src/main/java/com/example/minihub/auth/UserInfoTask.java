@@ -1,14 +1,10 @@
-package com.example.minihub.user_info;
+package com.example.minihub.auth;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.minihub.GithubService;
-import com.example.minihub.R;
-import com.example.minihub.ServiceGenerator;
+import com.example.minihub.network.GithubService;
+import com.example.minihub.network.ServiceGenerator;
 import com.example.minihub.data.User;
 
 import java.io.IOException;

@@ -1,8 +1,8 @@
-package com.example.minihub;
+package com.example.minihub.network;
 
 import android.text.TextUtils;
 
-import com.example.minihub.auth.AuthenticationInterceptor;
+import com.example.minihub.network.AuthenticationInterceptor;
 
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
