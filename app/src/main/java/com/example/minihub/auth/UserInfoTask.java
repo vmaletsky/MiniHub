@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.example.minihub.network.GithubService;
 import com.example.minihub.network.ServiceGenerator;
-import com.example.minihub.data.User;
+import com.example.minihub.domain.User;
 
 import java.io.IOException;
 

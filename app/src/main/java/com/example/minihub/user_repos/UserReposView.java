@@ -1,8 +1,6 @@
 package com.example.minihub.user_repos;
 
-import com.example.minihub.BasePresenter;
-import com.example.minihub.BaseView;
-import com.example.minihub.data.Repository;
+import com.example.minihub.domain.Repository;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.List;

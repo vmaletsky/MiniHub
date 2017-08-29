@@ -1,7 +1,7 @@
 package com.example.minihub.auth;
 
-import com.example.minihub.data.AccessToken;
-import com.example.minihub.data.User;
+import com.example.minihub.domain.AccessToken;
+import com.example.minihub.domain.User;
 import com.example.minihub.network.AuthAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 

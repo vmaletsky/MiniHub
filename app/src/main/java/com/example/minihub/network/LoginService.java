@@ -1,6 +1,6 @@
 package com.example.minihub.network;
 
-import com.example.minihub.data.AccessToken;
+import com.example.minihub.domain.AccessToken;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

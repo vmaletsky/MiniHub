@@ -1,4 +1,4 @@
-package com.example.minihub.data;
+package com.example.minihub.domain;
 
 /**
  * Created by volod on 8/20/2017.

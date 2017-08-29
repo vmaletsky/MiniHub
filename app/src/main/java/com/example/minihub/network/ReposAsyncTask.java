@@ -3,7 +3,7 @@ package com.example.minihub.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.minihub.data.Repository;
+import com.example.minihub.domain.Repository;
 
 import java.io.IOException;
 

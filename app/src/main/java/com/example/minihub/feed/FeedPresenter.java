@@ -1,6 +1,6 @@
 package com.example.minihub.feed;
 
-import com.example.minihub.data.FeedEvent;
+import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.network.EventsAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 

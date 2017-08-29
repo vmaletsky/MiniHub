@@ -3,7 +3,7 @@ package com.example.minihub.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.minihub.data.FeedEvent;
+import com.example.minihub.domain.FeedEvent;
 
 import java.io.IOException;
 import java.util.Arrays;

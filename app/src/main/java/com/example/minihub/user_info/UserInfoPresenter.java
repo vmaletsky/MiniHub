@@ -1,6 +1,6 @@
 package com.example.minihub.user_info;
 
-import com.example.minihub.data.User;
+import com.example.minihub.domain.User;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 /**

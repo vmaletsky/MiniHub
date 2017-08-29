@@ -1,6 +1,5 @@
-package com.example.minihub.data;
+package com.example.minihub.domain;
 
-import com.example.minihub.data.User;
 import com.google.gson.annotations.SerializedName;
 
 /**

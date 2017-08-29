@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.minihub.R;
-import com.example.minihub.data.Repository;
-import com.example.minihub.feed.FeedAdapter;
+import com.example.minihub.domain.Repository;
 
 import java.util.List;
 

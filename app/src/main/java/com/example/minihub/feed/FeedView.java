@@ -1,8 +1,6 @@
 package com.example.minihub.feed;
 
-import com.example.minihub.BasePresenter;
-import com.example.minihub.BaseView;
-import com.example.minihub.data.FeedEvent;
+import com.example.minihub.domain.FeedEvent;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.List;

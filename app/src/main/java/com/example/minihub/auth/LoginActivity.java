@@ -1,30 +1,20 @@
 package com.example.minihub.auth;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.minihub.data.User;
+import com.example.minihub.domain.User;
 import com.example.minihub.navigation.NavigationActivity;
 import com.example.minihub.R;
-import com.example.minihub.data.AccessToken;
+import com.example.minihub.domain.AccessToken;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 

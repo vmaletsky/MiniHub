@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.minihub.R;
-import com.example.minihub.data.FeedEvent;
+import com.example.minihub.domain.FeedEvent;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.ArrayList;
