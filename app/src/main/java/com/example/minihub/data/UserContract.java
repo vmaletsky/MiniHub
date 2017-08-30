@@ -11,6 +11,8 @@ public class UserContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.minihub.data";
 
+    public static final String TABLE_NAME = "users";
+
     public static final String PATH_USERS = "users";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);

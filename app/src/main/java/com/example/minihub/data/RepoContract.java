@@ -11,6 +11,8 @@ public class RepoContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.minihub";
 
+    public static final String TABLE_NAME = "repos";
+
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final class RepoEntry implements BaseColumns {
