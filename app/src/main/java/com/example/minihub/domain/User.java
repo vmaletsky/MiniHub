@@ -29,9 +29,23 @@ public class User {
     @SerializedName("following")
     public int following;
 
+    @SerializedName("followers_url")
+    public String followersUrl;
+
+    @SerializedName("following_url")
+    public String followingUrl;
+
+    @SerializedName("organizations_url")
+    public String organizationsUrl;
+
     @SerializedName("email")
     public String email;
 
     @SerializedName("location")
     public String location;
+
+    @SerializedName("bio")
+    public String bio;
+
+
 }

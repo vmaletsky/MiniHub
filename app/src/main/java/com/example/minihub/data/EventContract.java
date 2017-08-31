@@ -23,7 +23,5 @@ public class EventContract {
 
         public static final String COLUMN_REPO_ID = "repo_id";
 
-        public static final String COLUMN_
-
     }
 }

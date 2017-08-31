@@ -22,4 +22,6 @@ public class FeedEvent {
 
     @SerializedName("repo")
     public Repository repo;
+
+    public Payload payload;
 }

@@ -15,4 +15,25 @@ public class Repository {
 
     @SerializedName("url")
     public String url;
+
+    @SerializedName("stargazers_url")
+    public String stargazersUrl;
+
+    @SerializedName("stargazers_count")
+    public int stargazersCount;
+
+    @SerializedName("watchers_count")
+    public int watchersCount;
+
+    @SerializedName("topics")
+    public String[] topics;
+
+    @SerializedName("forks_count")
+    public int forksCount;
+
+    @SerializedName("subscribers_count")
+    public int subscribersCount;
+
+    @SerializedName("language")
+    public String language;
 }
