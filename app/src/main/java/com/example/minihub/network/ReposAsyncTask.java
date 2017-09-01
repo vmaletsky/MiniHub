@@ -13,7 +13,7 @@ import retrofit2.Response;
  * Created by volod on 8/26/2017.
  */
 
-class ReposAsyncTask extends AsyncTask<String, Void, Repository[]> {
+public class ReposAsyncTask extends AsyncTask<String, Void, Repository[]> {
     private String TAG = getClass().getSimpleName();
 
     public ReposListener listener;
