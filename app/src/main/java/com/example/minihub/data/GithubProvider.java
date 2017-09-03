@@ -1,22 +1,47 @@
 package com.example.minihub.data;
 
+import android.content.ContentProvider;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
-
-import net.simonvt.schematic.annotation.ContentProvider;
-import net.simonvt.schematic.annotation.ContentUri;
-import net.simonvt.schematic.annotation.TableEndpoint;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by v.maletskiy on 8/29/2017.
  */
-@ContentProvider(authority = GithubProvider.AUTHORITY, database = GithubDB.class)
-public class GithubProvider {
 
-    public static final String AUTHORITY = "com.example.minihub.data";
-
-    @TableEndpoint(table = GithubDB.USERS)  public static class Users {
-        @ContentUri(path="users", type="")
-        public static final Uri USERS = Uri.parse("content://" + AUTHORITY + "/users");
+public class GithubProvider extends ContentProvider{
+    @Override
+    public boolean onCreate() {
+        return false;
     }
 
+    @Nullable
+    @Override
+    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
+        return null;
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+        return 0;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+        return 0;
+    }
 }
