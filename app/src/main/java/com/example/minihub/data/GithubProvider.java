@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -53,8 +54,41 @@ public class GithubProvider extends ContentProvider{
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                        String sortOrder) {
+        Cursor retCursor;
+        switch (mUriMatcher.match(uri)) {
+            case EVENT:
+                retCursor = queryBuilder.query(mDBHelper.getReadableDatabase(), projection,
+                        selection, selectionArgs, null, null, sortOrder);
+                break;
+            case USER:
+                retCursor = mDBHelper.getReadableDatabase().query(
+                        UsersContract.UserColumns.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case REPO:
+                retCursor = mDBHelper.getReadableDatabase().query(
+                        RepoContract.RepoColumns.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Nullable
@@ -68,24 +102,101 @@ public class GithubProvider extends ContentProvider{
                 return RepoContract.RepoColumns.CONTENT_TYPE;
             case EVENT:
                 return EventsContract.EventColumns.CONTENT_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        return null;
     }
 
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        final SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        final int match = mUriMatcher.match(uri);
+        Uri returnUri;
+        switch (match) {
+            case EVENT: {
+                long _id = db.insert(EventsContract.EventColumns.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = EventsContract.EventColumns.buildEventsUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case USER: {
+                long _id = db.insert(UsersContract.UserColumns.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = UsersContract.UserColumns.buildUsersUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case REPO: {
+                long _id = db.insert(RepoContract.RepoColumns.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = RepoContract.RepoColumns.buildReposUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        return returnUri;
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        final int match = mUriMatcher.match(uri);
+        int rowsDeleted;
+        if ( null == selection ) selection = "1";
+        switch (match) {
+            case EVENT: {
+                rowsDeleted = db.delete(EventsContract.EventColumns.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            case USER: {
+                rowsDeleted = db.delete(UsersContract.UserColumns.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            case REPO: {
+                rowsDeleted = db.delete(RepoContract.RepoColumns.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        final int match = mUriMatcher.match(uri);
+        int rowsUpdated;
+        switch (match) {
+            case EVENT: {
+                rowsUpdated = db.update(EventsContract.EventColumns.TABLE_NAME, contentValues, selection, selectionArgs);
+                break;
+            }
+            case USER: {
+                rowsUpdated = db.update(UsersContract.UserColumns.TABLE_NAME, contentValues, selection, selectionArgs);
+                break;
+            }
+            case REPO: {
+                rowsUpdated = db.update(RepoContract.RepoColumns.TABLE_NAME, contentValues, selection, selectionArgs);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     static UriMatcher buildUriMatcher() {

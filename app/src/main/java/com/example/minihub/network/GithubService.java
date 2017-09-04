@@ -4,6 +4,8 @@ import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -18,7 +20,7 @@ public interface GithubService {
     Call<User> getAuthenticatedUser();
 
     @GET("/users/vmaletsky/received_events") // TODO: make username parameter
-    Call<FeedEvent[]> getUserEvents();
+    Call<List<FeedEvent>> getUserEvents();
 
     @GET("/user/repos")
     Call<Repository[]> getUserRepos();

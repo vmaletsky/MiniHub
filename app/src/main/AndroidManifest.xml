@@ -33,6 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.example.minihub.data"
+            android:name=".data.GithubProvider"
+            android:syncable="true"
+            android:exported="false">
+
+        </provider>
     </application>
 
 </manifest>
