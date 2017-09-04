@@ -1,24 +1,46 @@
 package com.example.minihub.data;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.net.Uri;
 import android.provider.BaseColumns;
-
-import net.simonvt.schematic.annotation.DataType;
-import net.simonvt.schematic.annotation.NotNull;
-import net.simonvt.schematic.annotation.PrimaryKey;
-
 /**
  * Created by Daryna on 03.09.17.
  */
 
-public class EventsContract {
+public final class EventsContract {
 
-    public class EventColumns implements BaseColumns {
-        String COLUMN_EVENT_ID = "id";
+    public static final String CONTENT_AUTHORITY = "com.example.minihub.data";
 
-        String COLUMN_TYPE = "name";
+    public static final String PATH_EVENTS = "events";
 
-        String COLUMN_USER_ID = "user_id";
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-        String COLUMN_REPO_ID = "repo_id";
+
+
+    public static class EventColumns implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENTS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EVENTS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EVENTS;
+
+        public static final String TABLE_NAME = "events";
+
+        public static final String COLUMN_EVENT_ID = "id";
+
+        public static final String COLUMN_TYPE = "name";
+
+        public static final String COLUMN_USER_ID = "user_id";
+
+        public static final String COLUMN_REPO_ID = "repo_id";
+
+        public static final String COLUMN_CREATED_AT = "created_at";
+
+        public static Uri buildEventsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }
