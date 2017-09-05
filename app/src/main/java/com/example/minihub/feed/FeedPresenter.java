@@ -1,7 +1,7 @@
 package com.example.minihub.feed;
 
 import com.example.minihub.domain.FeedEvent;
-import com.example.minihub.network.EventsAsyncTask;
+import com.example.minihub.sync.GithubSyncAdapter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
@@ -14,25 +14,14 @@ import java.util.List;
 public class FeedPresenter extends MvpBasePresenter<FeedView> {
     private String TAG = getClass().getSimpleName();
 
-    EventsAsyncTask task;
 
 
     public void getEvents() {
-        String token = getView().getAccessToken();
-        task = new EventsAsyncTask(new EventsAsyncTask.FeedTaskListener() {
-            @Override
-            public void onFeedReceived(List<FeedEvent> events) {
-                if (isViewAttached()) {
-                    getView().setData(events);
-                }
-            }
-        });
-        task.execute(token);
-        getView().showEvents();
+        getView().sync();
     }
 
     @Override
     public void detachView(boolean retainInstance) {
-        task.cancel(true);
+
     }
 }

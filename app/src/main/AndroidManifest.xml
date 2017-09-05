@@ -46,6 +46,22 @@
             android:exported="false">
 
         </provider>
+
+        <service android:name=".sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"></action>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <service android:name=".sync.GithubSyncService" android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"></action>
+            </intent-filter>
+            <meta-data  android:name="android.content.SyncAdapter" android:resource="@xml/syncadapter" />
+        </service>
     </application>
 
 </manifest>

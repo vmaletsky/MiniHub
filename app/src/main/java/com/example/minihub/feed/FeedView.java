@@ -11,9 +11,7 @@ import java.util.List;
 
 public interface FeedView extends MvpView {
 
-    void showEvents();
-
-    void setData(List<FeedEvent> events);
+    void sync();
 
     String getAccessToken();
 }

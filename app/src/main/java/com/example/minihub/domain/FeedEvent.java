@@ -15,7 +15,7 @@ public class FeedEvent {
     public User actor;
 
     @SerializedName("id")
-    public String id;
+    public long id;
 
     @SerializedName("type")
     public String type;

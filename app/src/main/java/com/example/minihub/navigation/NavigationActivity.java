@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.minihub.R;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.feed.FeedFragment;
+import com.example.minihub.sync.GithubSyncAdapter;
 import com.example.minihub.user_info.UserInfoFragment;
 import com.example.minihub.user_repos.UserReposFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
@@ -37,7 +38,7 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
-
+        GithubSyncAdapter.initializeSyncAdapter(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
 

@@ -12,7 +12,7 @@ public class GithubDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "minihub.db";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 6;
 
     public GithubDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,6 +25,7 @@ public class GithubDBHelper extends SQLiteOpenHelper {
                 UsersContract.UserColumns.COLUMN_LOGIN + " TEXT NOT NULL, " +
                 UsersContract.UserColumns.COLUMN_NAME + " TEXT, " +
                 UsersContract.UserColumns.COLUMN_AVATAR_URL + " TEXT, " +
+                UsersContract.UserColumns.COLUMN_PUBLIC_REPOS + " TEXT, " +
                 UsersContract.UserColumns.COLUMN_EMAIL + " TEXT, " +
                 UsersContract.UserColumns.COLUMN_FOLLOWERS + " INTEGER, " +
                 UsersContract.UserColumns.COLUMN_FOLLOWING + " INTEGER, " +
@@ -35,24 +36,28 @@ public class GithubDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_REPOS_TABLE = "CREATE TABLE " + RepoContract.RepoColumns.TABLE_NAME + " (" +
                 RepoContract.RepoColumns.COLUMN_REPO_ID + " INTEGER PRIMARY KEY, " +
                 RepoContract.RepoColumns.COLUMN_NAME + " TEXT NOT NULL, " +
-                " FOREIGN KEY (" + RepoContract.RepoColumns.COLUMN_USER_ID + " ) REFERENCES " +
-                UsersContract.UserColumns.TABLE_NAME + " (" + UsersContract.UserColumns.COLUMN_USER_ID + " ), " +
+                RepoContract.RepoColumns.COLUMN_USER_ID + " INTEGER NOT NULL, " +
                 RepoContract.RepoColumns.COLUMN_LANGUAGE + " TEXT, " +
                 RepoContract.RepoColumns.COLUMN_TOPICS + " TEXT, " +
                 RepoContract.RepoColumns.COLUMN_STARGAZERS_COUNT + " INTEGER, " +
                 RepoContract.RepoColumns.COLUMN_FORKS_COUNT + " INTEGER, " +
                 RepoContract.RepoColumns.COLUMN_WATCHERS_COUNT + " INTEGER, " +
-                RepoContract.RepoColumns.COLUMN_STARGAZERS_URL + " TEXT " +
+                RepoContract.RepoColumns.COLUMN_STARGAZERS_URL + " TEXT, " +
+                " FOREIGN KEY (" + RepoContract.RepoColumns.COLUMN_USER_ID + " ) REFERENCES " +
+                UsersContract.UserColumns.TABLE_NAME + " (" + UsersContract.UserColumns.COLUMN_USER_ID + " ) " +
                 " );";
 
         final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " + EventsContract.EventColumns.TABLE_NAME + " (" +
                 EventsContract.EventColumns.COLUMN_EVENT_ID + " INTEGER PRIMARY KEY, " +
+                EventsContract.EventColumns.COLUMN_REPO_ID + " INTEGER, " +
+                EventsContract.EventColumns.COLUMN_USER_ID + " INTEGER, " +
+                EventsContract.EventColumns.COLUMN_TYPE + " TEXT NOT NULL, " +
+                EventsContract.EventColumns.COLUMN_CREATED_AT + " TEXT NOT NULL," +
                 " FOREIGN KEY (" + EventsContract.EventColumns.COLUMN_REPO_ID + " ) REFERENCES " +
                 RepoContract.RepoColumns.TABLE_NAME + " (" + RepoContract.RepoColumns.COLUMN_REPO_ID + " ), " +
                 " FOREIGN KEY (" + EventsContract.EventColumns.COLUMN_USER_ID + " ) REFERENCES " +
-                UsersContract.UserColumns.TABLE_NAME + " (" + UsersContract.UserColumns.COLUMN_USER_ID + " ), " +
-                EventsContract.EventColumns.COLUMN_TYPE + " TEXT NOT NULL, " +
-                EventsContract.EventColumns.COLUMN_CREATED_AT + " TEXT NOT NULL" +
+                UsersContract.UserColumns.TABLE_NAME + " (" + UsersContract.UserColumns.COLUMN_USER_ID + " ) " +
+
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_EVENTS_TABLE);
