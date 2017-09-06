@@ -12,7 +12,7 @@ public class GithubDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "minihub.db";
 
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
 
     public GithubDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +36,7 @@ public class GithubDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_REPOS_TABLE = "CREATE TABLE " + RepoContract.RepoColumns.TABLE_NAME + " (" +
                 RepoContract.RepoColumns.COLUMN_REPO_ID + " INTEGER PRIMARY KEY, " +
                 RepoContract.RepoColumns.COLUMN_NAME + " TEXT NOT NULL, " +
-                RepoContract.RepoColumns.COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                RepoContract.RepoColumns.COLUMN_USER_ID + " INTEGER, " +
                 RepoContract.RepoColumns.COLUMN_LANGUAGE + " TEXT, " +
                 RepoContract.RepoColumns.COLUMN_TOPICS + " TEXT, " +
                 RepoContract.RepoColumns.COLUMN_STARGAZERS_COUNT + " INTEGER, " +

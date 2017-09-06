@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -32,10 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-import static com.example.minihub.network.ServiceGenerator.createService;
-
-
-
 public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implements FeedView, LoaderManager.LoaderCallbacks<Cursor> {
     String TAG = getClass().getSimpleName();
 
@@ -56,6 +53,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(0, null, this);
         super.onCreate(savedInstanceState);
     }
 
@@ -64,6 +62,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, view);
@@ -77,9 +76,21 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        mFeedAdapter = new FeedAdapter(getActivity(), null);
+        mFeedList.setAdapter(mFeedAdapter);
+        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
+
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onResume() {
-        presenter.getEvents();
         super.onResume();
+        presenter.getEvents();
+        mFeedAdapter.notifyDataSetChanged();
+        getLoaderManager().restartLoader(0, null, this);
+
     }
 
     @Override
@@ -90,15 +101,15 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     }
 
     public String EVENT_COLUMNS[] =  {
-            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_EVENT_ID,
-            EventsContract.EventColumns.COLUMN_TYPE,
-            EventsContract.EventColumns.COLUMN_USER_ID,
-            EventsContract.EventColumns.COLUMN_CREATED_AT,
-            EventsContract.EventColumns.COLUMN_REPO_ID,
-            UsersContract.UserColumns.COLUMN_NAME,
-            UsersContract.UserColumns.COLUMN_AVATAR_URL,
-            UsersContract.UserColumns.COLUMN_LOGIN,
-            RepoContract.RepoColumns.COLUMN_NAME
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_EVENT_ID + " AS _id",
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_TYPE,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_USER_ID,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_CREATED_AT,
+            EventsContract.EventColumns.TABLE_NAME + "." +EventsContract.EventColumns.COLUMN_REPO_ID,
+            UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_NAME,
+            UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_AVATAR_URL,
+            UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_LOGIN,
+            RepoContract.RepoColumns.TABLE_NAME + "." + RepoContract.RepoColumns.COLUMN_NAME
     };
 
     static final int COL_EVENT_ID = 0;
@@ -115,7 +126,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = EventsContract.EventColumns.COLUMN_CREATED_AT + " ASC";
+        String sortOrder = EventsContract.EventColumns.COLUMN_CREATED_AT + " DESC";
 
         Uri eventsUri = EventsContract.EventColumns.CONTENT_URI;
 
@@ -130,6 +141,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mFeedAdapter.swapCursor(data);
+        Log.v(TAG, String.valueOf(data.getCount()));
+        mFeedAdapter.notifyDataSetChanged();
         if (mPosition != ListView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.
