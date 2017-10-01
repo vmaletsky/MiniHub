@@ -51,6 +51,15 @@ public class GithubProvider extends ContentProvider{
         return true;
     }
 
+    public Cursor myQuery() {
+        String query = "SELECT * FROM " + EventsContract.EventColumns.TABLE_NAME + " LEFT JOIN "
+                + UsersContract.UserColumns.TABLE_NAME + " ON "
+                + EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_USER_ID
+                + " = " + UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_USER_ID;
+
+        return mDBHelper.getReadableDatabase().rawQuery(query, null);
+    }
+
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
