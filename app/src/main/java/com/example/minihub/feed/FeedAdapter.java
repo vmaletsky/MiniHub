@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.minihub.R;
+import com.example.minihub.Utilities;
 import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
@@ -31,7 +32,6 @@ public class FeedAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.v(TAG, "newView");
         View view = LayoutInflater.from(context).inflate(R.layout.feed_element, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
@@ -42,31 +42,22 @@ public class FeedAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.v(TAG, "bindView");
         ViewHolder holder = (ViewHolder) view.getTag();
         FeedEvent event = new FeedEvent();
         event.id = cursor.getLong(FeedFragment.COL_EVENT_ID);
         event.createdAt = cursor.getString(FeedFragment.COL_CREATED_AT);
         event.type = cursor.getString(FeedFragment.COL_EVENT_TYPE);
-        Toast.makeText(context, "Event id : " + event.id + " event.createdAt " + event.createdAt + " event.type" +
-                event.type, Toast.LENGTH_SHORT).show();
         event.repo = new Repository();
-            event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
-            event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
+        event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
+        event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
         event.actor = new User();
-        if (event.actor != null) {
-            event.actor.id = cursor.getInt(FeedFragment.COL_USER_ID);
-            event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
-            event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
-            event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
-        } else {
-            Toast.makeText(context, "User is Null!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+        event.actor.id = cursor.getInt(FeedFragment.COL_USER_ID);
+        event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
+        event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
+        event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
 
         User actor = event.actor;
-        holder.eventTextView.setText(actor.login + " made action  " + event.type + " to " + event.repo.name);
+        holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name);
         Glide.with(context)
                 .load(actor.avatarUrl)
                 .override(152, 152)
