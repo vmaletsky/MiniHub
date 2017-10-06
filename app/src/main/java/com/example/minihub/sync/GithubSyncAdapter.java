@@ -42,7 +42,7 @@ public class GithubSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final String TAG = getClass().getSimpleName();
 
-    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final int SYNC_INTERVAL = 60 * 30;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 

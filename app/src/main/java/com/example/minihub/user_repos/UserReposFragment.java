@@ -3,6 +3,7 @@ package com.example.minihub.user_repos;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,9 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     @BindView(R.id.user_repos_list)
     RecyclerView mReposList;
 
+    @BindView(R.id.refresh_repos)
+    SwipeRefreshLayout mLayoutRepos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,6 +39,20 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
         View view = inflater.inflate(R.layout.fragment_repositories, container, false);
         ButterKnife.bind(this, view);
+        mLayoutRepos.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadRepos();
+            }
+        });
+        mAdapter = new ReposAdapter();
+        mReposList.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mReposList.setLayoutManager(layoutManager);
+        mReposList.setHasFixedSize(true);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mReposList.getContext(),
+                layoutManager.getOrientation());
+        mReposList.addItemDecoration(dividerItemDecoration);
         return  view;
     }
 
@@ -53,15 +71,13 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
     @Override
     public void showRepos(List<Repository> repos) {
-        mAdapter = new ReposAdapter(repos);
-        mReposList.setAdapter(mAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mReposList.setLayoutManager(layoutManager);
-        mReposList.setHasFixedSize(true);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mReposList.getContext(),
-                layoutManager.getOrientation());
-        mReposList.addItemDecoration(dividerItemDecoration);
+        mAdapter.setRepos(repos);
+        mAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void onLoadFinished() {
+        mLayoutRepos.setRefreshing(false);
     }
 
     @Override

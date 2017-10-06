@@ -19,7 +19,9 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> {
             public void onReposLoaded(Repository[] repos) {
                 if (isViewAttached()) {
                     getView().showRepos(Arrays.asList(repos));
+                    getView().onLoadFinished();
                 }
+
             }
         });
         task.execute(getView().getAccessToken());

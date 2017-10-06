@@ -84,6 +84,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
         super.onActivityCreated(savedInstanceState);
     }
 
+/*
     @Override
     public void onResume() {
         super.onResume();
@@ -92,13 +93,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
         getLoaderManager().restartLoader(0, null, this);
 
     }
-
-    @Override
-    public String getAccessToken() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String token = sp.getString(getString(R.string.access_token_pref_id), null);
-        return token;
-    }
+*/
 
     public String EVENT_COLUMNS[] =  {
             EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_EVENT_ID + " AS _id",
@@ -138,6 +133,14 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
                 sortOrder);
     }
 
+
+    @Override
+    public String getAccessToken() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = sp.getString(getString(R.string.access_token_pref_id), null);
+        return token;
+    }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mFeedAdapter.swapCursor(data);
@@ -154,6 +157,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     public void onLoaderReset(Loader<Cursor> loader) {
         mFeedAdapter.swapCursor(null);
     }
+
+
 
     public void sync() {
         GithubSyncAdapter.syncImmediately(getActivity());

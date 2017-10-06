@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.minihub.R;
 import com.example.minihub.domain.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +18,13 @@ import java.util.List;
 
 public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> {
 
-    List<Repository> repos;
+    private List<Repository> repos;
 
-    public ReposAdapter(List<Repository> repos) {
+    public ReposAdapter() {
+        repos = new ArrayList<>();
+    }
+
+    public void setRepos(List<Repository> repos) {
         this.repos = repos;
     }
 

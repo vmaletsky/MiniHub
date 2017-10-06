@@ -12,5 +12,7 @@ import java.util.List;
 public interface UserReposView extends MvpView {
     String getAccessToken();
 
+    void onLoadFinished();
+
     void showRepos(List<Repository> repos);
 }
