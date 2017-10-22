@@ -18,6 +18,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> {
 
     public void getEvents() {
         getView().sync();
+        getView().refreshLayout();
     }
 
     @Override

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/feed_list"
+<android.support.v4.widget.SwipeRefreshLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/refresh_feed"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/feed_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</ListView>
+    </ListView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

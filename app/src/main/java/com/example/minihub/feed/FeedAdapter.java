@@ -2,13 +2,11 @@ package com.example.minihub.feed;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.minihub.R;
@@ -57,7 +55,8 @@ public class FeedAdapter extends CursorAdapter {
         event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
 
         User actor = event.actor;
-        holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name);
+        holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name +
+                " at " + event.createdAt);
         Glide.with(context)
                 .load(actor.avatarUrl)
                 .override(152, 152)

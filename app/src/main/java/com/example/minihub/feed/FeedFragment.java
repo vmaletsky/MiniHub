@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,12 +34,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implements FeedView, LoaderManager.LoaderCallbacks<Cursor> {
+public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
+        implements FeedView, LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     String TAG = getClass().getSimpleName();
 
     @BindView(R.id.feed_list)
     public ListView mFeedList;
     public FeedAdapter mFeedAdapter;
+
+    @BindView(R.id.refresh_feed)
+    public SwipeRefreshLayout mRefreshFeed;
 
     private int mPosition = ListView.INVALID_POSITION;
 
@@ -53,7 +58,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(0, null, this);
+
         super.onCreate(savedInstanceState);
     }
 
@@ -65,22 +70,23 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        mFeedAdapter = new FeedAdapter(getActivity(), null);
+        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
         ButterKnife.bind(this, view);
+        mFeedList.setAdapter(mFeedAdapter);
         Timber.plant(new Timber.Tree() {
             @Override
             protected void log(int priority, String tag, String message, Throwable t) {
                 Log.v(tag, message);
             }
         });
+        mRefreshFeed.setOnRefreshListener(this);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        mFeedAdapter = new FeedAdapter(getActivity(), null);
-        mFeedList.setAdapter(mFeedAdapter);
-        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
-
+        getLoaderManager().initLoader(0, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -124,15 +130,14 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
         String sortOrder = EventsContract.EventColumns.COLUMN_CREATED_AT + " DESC";
 
         Uri eventsUri = EventsContract.EventColumns.CONTENT_URI;
-
-        return new CursorLoader(getActivity(),
+        CursorLoader loader = new CursorLoader(getActivity(),
                 eventsUri,
                 EVENT_COLUMNS,
                 null,
                 null,
                 sortOrder);
+        return loader;
     }
-
 
     @Override
     public String getAccessToken() {
@@ -144,12 +149,10 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mFeedAdapter.swapCursor(data);
-        Log.v(TAG, String.valueOf(data.getCount()));
-        mFeedAdapter.notifyDataSetChanged();
-        if (mPosition != ListView.INVALID_POSITION) {
-            // If we don't need to restart the loader, and there's a desired position to restore
-            // to, do so now.
-            mFeedList.smoothScrollToPosition(mPosition);
+        Log.v(TAG, "onLoadFinished: " + String.valueOf(data.getCount()));
+        mRefreshFeed.setRefreshing(false);
+        if (data.moveToFirst()) {
+            mFeedAdapter.notifyDataSetChanged();
         }
     }
 
@@ -158,9 +161,18 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter> implement
         mFeedAdapter.swapCursor(null);
     }
 
+    public void onRefresh() {
+        Log.d(TAG , "||onRefresh called||");
+        getLoaderManager().restartLoader(0 , null ,this);
+    }
 
 
     public void sync() {
         GithubSyncAdapter.syncImmediately(getActivity());
+    }
+
+    @Override
+    public void refreshLayout() {
+        sync();
     }
 }

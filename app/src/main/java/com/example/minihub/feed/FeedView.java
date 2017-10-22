@@ -13,5 +13,7 @@ public interface FeedView extends MvpView {
 
     void sync();
 
+    void refreshLayout();
+
     String getAccessToken();
 }
