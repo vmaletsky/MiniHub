@@ -2,6 +2,7 @@ package com.example.minihub.feed;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,50 +22,77 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by v.maletskiy on 7/18/2017.
  */
 
-public class FeedAdapter extends CursorAdapter {
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     private String TAG = getClass().getSimpleName();
 
+    private CursorAdapter mCursorAdapter;
+
+    private Context mContext;
+
     public FeedAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+        mContext = context;
+        mCursorAdapter = new CursorAdapter(mContext, c, 0) {
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                View view = LayoutInflater.from(context).inflate(R.layout.feed_element, parent, false);
+
+                ViewHolder viewHolder = new ViewHolder(view);
+                view.setTag(viewHolder);
+
+                return view;
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                ViewHolder holder = (ViewHolder) view.getTag();
+                FeedEvent event = new FeedEvent();
+                event.id = cursor.getLong(FeedFragment.COL_EVENT_ID);
+                event.createdAt = cursor.getString(FeedFragment.COL_CREATED_AT);
+                event.type = cursor.getString(FeedFragment.COL_EVENT_TYPE);
+                event.repo = new Repository();
+                event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
+                event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
+                event.actor = new User();
+                event.actor.id = cursor.getInt(FeedFragment.COL_USER_ID);
+                event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
+                event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
+                event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
+
+                User actor = event.actor;
+                holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name +
+                        " at " + event.createdAt);
+                Glide.with(context)
+                        .load(actor.avatarUrl)
+                        .override(152, 152)
+                        .centerCrop()
+                        .into(holder.avatar);
+            }
+        };
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.feed_element, parent, false);
-
-        ViewHolder viewHolder = new ViewHolder(view);
-        view.setTag(viewHolder);
-
-        return view;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder holder = (ViewHolder) view.getTag();
-        FeedEvent event = new FeedEvent();
-        event.id = cursor.getLong(FeedFragment.COL_EVENT_ID);
-        event.createdAt = cursor.getString(FeedFragment.COL_CREATED_AT);
-        event.type = cursor.getString(FeedFragment.COL_EVENT_TYPE);
-        event.repo = new Repository();
-        event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
-        event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
-        event.actor = new User();
-        event.actor.id = cursor.getInt(FeedFragment.COL_USER_ID);
-        event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
-        event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
-        event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
-
-        User actor = event.actor;
-        holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name +
-                " at " + event.createdAt);
-        Glide.with(context)
-                .load(actor.avatarUrl)
-                .override(152, 152)
-                .centerCrop()
-                .into(holder.avatar);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        mCursorAdapter.getCursor().moveToPosition(position); //EDITED: added this line as suggested in the comments below, thanks :)
+        mCursorAdapter.bindView(holder.itemView, mContext, mCursorAdapter.getCursor());
     }
 
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return mCursorAdapter.getCount();
+    }
+
+
+    public void swapCursor(Cursor cursor) {
+        mCursorAdapter.swapCursor(cursor);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         public CircleImageView avatar;
 
@@ -73,6 +101,7 @@ public class FeedAdapter extends CursorAdapter {
         public TextView timeTextView;
 
         public ViewHolder(View itemView) {
+            super(itemView);
             this.avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
             this.eventTextView = (TextView) itemView.findViewById(R.id.event_text);
             this.timeTextView = (TextView) itemView.findViewById(R.id.time_text);

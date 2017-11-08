@@ -39,13 +39,12 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         implements FeedView, LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     String TAG = getClass().getSimpleName();
     @BindView(R.id.feed_list)
-    public ListView mFeedList;
+    public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
 
     @BindView(R.id.refresh_feed)
     public SwipeRefreshLayout mRefreshFeed;
 
-    private int mPosition = ListView.INVALID_POSITION;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -73,8 +72,9 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         ButterKnife.bind(this, view);
 
         mFeedAdapter = new FeedAdapter(getActivity(), null);
-        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
-
+        Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mFeedList.setLayoutManager(layoutManager);
         mFeedList.setAdapter(mFeedAdapter);
         Timber.plant(new Timber.Tree() {
             @Override
