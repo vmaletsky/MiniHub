@@ -38,7 +38,6 @@ import timber.log.Timber;
 public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         implements FeedView, LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
     String TAG = getClass().getSimpleName();
-    FeedAsyncTask mFeedAsyncTask;
     @BindView(R.id.feed_list)
     public ListView mFeedList;
     public FeedAdapter mFeedAdapter;
@@ -54,7 +53,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @Override
     public FeedPresenter createPresenter() {
-        return new FeedPresenter();
+        return new FeedPresenter(getActivity());
     }
 
     @Override
@@ -71,11 +70,11 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        mFeedAdapter = new FeedAdapter(getActivity(), null);
-        mFeedAsyncTask = new FeedAsyncTask(getActivity());
-        mFeedAsyncTask.execute();
-        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
         ButterKnife.bind(this, view);
+
+        mFeedAdapter = new FeedAdapter(getActivity(), null);
+        Log.v(TAG, String.valueOf(mFeedAdapter.getCount()));
+
         mFeedList.setAdapter(mFeedAdapter);
         Timber.plant(new Timber.Tree() {
             @Override
@@ -93,16 +92,15 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         super.onActivityCreated(savedInstanceState);
     }
 
-/*
+
     @Override
     public void onResume() {
         super.onResume();
-        presenter.getEvents();
-        mFeedAdapter.notifyDataSetChanged();
+        presenter.loadData();
         getLoaderManager().restartLoader(0, null, this);
 
     }
-*/
+
 
     public String EVENT_COLUMNS[] =  {
             EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_EVENT_ID + " AS _id",
@@ -165,18 +163,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     }
 
     public void onRefresh() {
-        Log.d(TAG , "||onRefresh called||");
-        mFeedAsyncTask = new FeedAsyncTask(getActivity());
-        mFeedAsyncTask.execute();
-    }
-
-
-    public void sync() {
-
-    }
-
-    @Override
-    public void refreshLayout() {
-        sync();
+        presenter.loadData();
     }
 }
