@@ -42,6 +42,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
 
+    private int mPage;
+
     @BindView(R.id.refresh_feed)
     public SwipeRefreshLayout mRefreshFeed;
 
@@ -70,11 +72,19 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, view);
-
+        mPage = 1;
         mFeedAdapter = new FeedAdapter(getActivity(), null);
         Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mFeedList.setLayoutManager(layoutManager);
+        mFeedList.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                Log.v(TAG, "onLoadMore");
+                presenter.loadData(false, mPage + 1);
+                mPage += 1;
+            }
+        });
         mFeedList.setAdapter(mFeedAdapter);
         Timber.plant(new Timber.Tree() {
             @Override
@@ -96,7 +106,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @Override
     public void onResume() {
         super.onResume();
-        presenter.loadData();
+        presenter.loadData(true, 1);
         getLoaderManager().restartLoader(0, null, this);
 
     }
@@ -154,6 +164,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mRefreshFeed.setRefreshing(false);
         if (data.moveToFirst()) {
             mFeedAdapter.notifyDataSetChanged();
+            mFeedAdapter.dataSetChanged();
         }
     }
 
@@ -163,6 +174,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     }
 
     public void onRefresh() {
-        presenter.loadData();
+        presenter.loadData(true, 1);
     }
 }

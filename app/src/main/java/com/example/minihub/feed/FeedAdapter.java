@@ -70,6 +70,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         };
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent);
@@ -90,6 +91,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public void swapCursor(Cursor cursor) {
         mCursorAdapter.swapCursor(cursor);
+    }
+
+    public void dataSetChanged() {
+        mCursorAdapter.notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

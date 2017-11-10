@@ -10,10 +10,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-/**
- * Created by v.maletskiy on 8/29/2017.
- */
-
 public class GithubProvider extends ContentProvider{
 
     private GithubDBHelper mDBHelper;
@@ -122,7 +118,7 @@ public class GithubProvider extends ContentProvider{
                 break;
             }
             case USER: {
-                long _id = db.insert(UsersContract.UserColumns.TABLE_NAME, null, contentValues);
+                long _id = db.insertWithOnConflict(UsersContract.UserColumns.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
                     returnUri = UsersContract.UserColumns.buildUsersUri(_id);
                 else
@@ -130,7 +126,7 @@ public class GithubProvider extends ContentProvider{
                 break;
             }
             case REPO: {
-                long _id = db.insert(RepoContract.RepoColumns.TABLE_NAME, null, contentValues);
+                long _id = db.insertWithOnConflict(RepoContract.RepoColumns.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
                     returnUri = RepoContract.RepoColumns.buildReposUri(_id);
                 else

@@ -27,9 +27,13 @@ import retrofit2.Response;
 public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
     private String TAG = getClass().getSimpleName();
     private Context mContext;
+    private boolean mIsRefreshing;
+    private int mPage;
 
-    public FeedAsyncTask(Context context) {
+    public FeedAsyncTask(Context context, boolean isRefreshing, int page) {
         mContext = context;
+        mIsRefreshing = isRefreshing;
+        mPage = page;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
         GithubService service = ServiceGenerator.createService(GithubService.class, token);
         List<FeedEvent> events = new ArrayList<>();
         try {
-            Response<List<FeedEvent>> response = service.getUserEvents().execute();
+            Response<List<FeedEvent>> response = service.getUserEvents(mPage).execute();
             events = response.body();
         } catch (IOException e) {
             Log.v(TAG, e.getMessage());
@@ -105,8 +109,9 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
             eventValuesVector.toArray(cvArray);
 
             // delete old data
-            mContext.getContentResolver().delete(EventsContract.EventColumns.CONTENT_URI, null, null);
-
+            if (mIsRefreshing) {
+                mContext.getContentResolver().delete(EventsContract.EventColumns.CONTENT_URI, null, null);
+            }
             mContext.getContentResolver().bulkInsert(EventsContract.EventColumns.CONTENT_URI, cvArray);
         }
 
@@ -115,7 +120,9 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
             userValuesVector.toArray(cvArray);
 
             // delete old data
-            mContext.getContentResolver().delete(UsersContract.UserColumns.CONTENT_URI, null, null);
+            if (mIsRefreshing) {
+                mContext.getContentResolver().delete(UsersContract.UserColumns.CONTENT_URI, null, null);
+            }
 
             mContext.getContentResolver().bulkInsert(UsersContract.UserColumns.CONTENT_URI, cvArray);
         }
@@ -124,8 +131,9 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
             reposValuesVector.toArray(cvArray);
 
             // delete old data
-            mContext.getContentResolver().delete(RepoContract.RepoColumns.CONTENT_URI, null, null);
-
+            if (mIsRefreshing) {
+                mContext.getContentResolver().delete(RepoContract.RepoColumns.CONTENT_URI, null, null);
+            }
             mContext.getContentResolver().bulkInsert(RepoContract.RepoColumns.CONTENT_URI, cvArray);
         }
 

@@ -9,10 +9,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
-/**
- * Created by v.maletskiy on 8/17/2017.
- */
 
 public interface GithubService {
     @Headers("Accept: application/vnd.github.v3+json")
@@ -20,7 +18,7 @@ public interface GithubService {
     Call<User> getAuthenticatedUser();
 
     @GET("/users/vmaletsky/received_events") // TODO: make username parameter
-    Call<List<FeedEvent>> getUserEvents();
+    Call<List<FeedEvent>> getUserEvents(@Query("page") int page);
 
     @GET("/user/repos")
     Call<Repository[]> getUserRepos();
