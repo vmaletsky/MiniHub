@@ -150,7 +150,7 @@ public class GithubProvider extends ContentProvider{
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(EventsContract.EventColumns.TABLE_NAME, null, value);
+                        long _id = db.insertWithOnConflict(EventsContract.EventColumns.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                         if (_id != -1) {
                             returnCount++;
                         }

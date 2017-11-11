@@ -43,7 +43,7 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
         GithubService service = ServiceGenerator.createService(GithubService.class, token);
         List<FeedEvent> events = new ArrayList<>();
         try {
-            Response<List<FeedEvent>> response = service.getUserEvents(mPage).execute();
+            Response<List<FeedEvent>> response = service.getUserEvents(mPage, 10).execute();
             events = response.body();
         } catch (IOException e) {
             Log.v(TAG, e.getMessage());

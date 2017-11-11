@@ -41,6 +41,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
+    EndlessRecyclerOnScrollListener mScrollListener;
 
     private int mPage;
 
@@ -77,14 +78,15 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mFeedList.setLayoutManager(layoutManager);
-        mFeedList.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+        mScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
                 Log.v(TAG, "onLoadMore");
                 presenter.loadData(false, mPage + 1);
                 mPage += 1;
             }
-        });
+        };
+        mFeedList.addOnScrollListener(mScrollListener);
         mFeedList.setAdapter(mFeedAdapter);
         Timber.plant(new Timber.Tree() {
             @Override
@@ -106,6 +108,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @Override
     public void onResume() {
         super.onResume();
+        mScrollListener.reset(0, true);
         presenter.loadData(true, 1);
         getLoaderManager().restartLoader(0, null, this);
 
@@ -174,6 +177,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     }
 
     public void onRefresh() {
+        mScrollListener.reset(0, true);
         presenter.loadData(true, 1);
     }
 }

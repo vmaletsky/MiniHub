@@ -18,7 +18,7 @@ public interface GithubService {
     Call<User> getAuthenticatedUser();
 
     @GET("/users/vmaletsky/received_events") // TODO: make username parameter
-    Call<List<FeedEvent>> getUserEvents(@Query("page") int page);
+    Call<List<FeedEvent>> getUserEvents(@Query("page") int page, @Query("per_page") int perPage);
 
     @GET("/user/repos")
     Call<Repository[]> getUserRepos();
