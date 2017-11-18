@@ -77,6 +77,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mFeedAdapter = new FeedAdapter(getActivity(), null);
         Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        mFeedList.addItemDecoration(dividerItemDecoration);
         mFeedList.setLayoutManager(layoutManager);
         mScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
@@ -121,6 +123,11 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
             EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_USER_ID,
             EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_CREATED_AT,
             EventsContract.EventColumns.TABLE_NAME + "." +EventsContract.EventColumns.COLUMN_REPO_ID,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_PAYLOAD_ACTION,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_PAYLOAD_REF_TAG,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_PAYLOAD_REF,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_PAYLOAD_SIZE,
+            EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_PAYLOAD_MERGED,
             UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_NAME,
             UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_AVATAR_URL,
             UsersContract.UserColumns.TABLE_NAME + "." + UsersContract.UserColumns.COLUMN_LOGIN,
@@ -132,10 +139,15 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     static final int COL_USER_ID = 2;
     static final int COL_CREATED_AT = 3;
     static final int COL_REPO_ID = 4;
-    static final int COL_USER_NAME = 5;
-    static final int COL_AVATAR_URL = 6;
-    static final int COL_USER_LOGIN = 7;
-    static final int COL_REPO_NAME = 8;
+    static final int COL_ACTION = 5;
+    static final int COL_REF_TAG = 6;
+    static final int COL_REF = 7;
+    static final int COL_SIZE = 8;
+    static final int COL_MERGED = 9;
+    static final int COL_USER_NAME = 10;
+    static final int COL_AVATAR_URL = 11;
+    static final int COL_USER_LOGIN = 12;
+    static final int COL_REPO_NAME = 13;
 
 
 

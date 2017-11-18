@@ -2,7 +2,10 @@ package com.example.minihub.network;
 
 import android.text.TextUtils;
 
+import com.example.minihub.domain.Payload;
 import com.example.minihub.network.AuthenticationInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -18,10 +21,15 @@ public class ServiceGenerator {
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
+
+    static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Payload.class, new Payload.PayloadDeserializer()).create();
+    static GsonConverterFactory factory = GsonConverterFactory.create(gson);
+
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
+                    .addConverterFactory(factory);
 
     private static Retrofit retrofit = builder.build();
 

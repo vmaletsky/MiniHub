@@ -39,6 +39,16 @@ public final class EventsContract {
 
         public static final String COLUMN_CREATED_AT = "created_at";
 
+        public static final String COLUMN_PAYLOAD_ACTION = "payload_action";
+
+        public static final String COLUMN_PAYLOAD_SIZE = "payload_size";
+
+        public static final String COLUMN_PAYLOAD_REF_TAG = "payload_ref_tag";
+
+        public static final String COLUMN_PAYLOAD_REF = "payload_ref";
+
+        public static final String COLUMN_PAYLOAD_MERGED = "payload_merged";
+
         public static Uri buildEventsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

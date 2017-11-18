@@ -12,7 +12,7 @@ public class GithubDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "minihub.db";
 
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 10;
 
     public GithubDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,6 +53,11 @@ public class GithubDBHelper extends SQLiteOpenHelper {
                 EventsContract.EventColumns.COLUMN_USER_ID + " INTEGER, " +
                 EventsContract.EventColumns.COLUMN_TYPE + " TEXT NOT NULL, " +
                 EventsContract.EventColumns.COLUMN_CREATED_AT + " TEXT NOT NULL," +
+                EventsContract.EventColumns.COLUMN_PAYLOAD_ACTION + " TEXT, " +
+                EventsContract.EventColumns.COLUMN_PAYLOAD_REF_TAG + " TEXT, " +
+                EventsContract.EventColumns.COLUMN_PAYLOAD_REF + " TEXT, " +
+                EventsContract.EventColumns.COLUMN_PAYLOAD_SIZE + " INTEGER, " +
+                EventsContract.EventColumns.COLUMN_PAYLOAD_MERGED + " INTEGER, " +
                 " FOREIGN KEY (" + EventsContract.EventColumns.COLUMN_REPO_ID + " ) REFERENCES " +
                 RepoContract.RepoColumns.TABLE_NAME + " (" + RepoContract.RepoColumns.COLUMN_REPO_ID + " ), " +
                 " FOREIGN KEY (" + EventsContract.EventColumns.COLUMN_USER_ID + " ) REFERENCES " +

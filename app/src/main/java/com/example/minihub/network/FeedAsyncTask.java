@@ -71,6 +71,11 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
             eventValues.put(EventsContract.EventColumns.COLUMN_TYPE, event.type);
             eventValues.put(EventsContract.EventColumns.COLUMN_USER_ID, event.actor.id);
             eventValues.put(EventsContract.EventColumns.COLUMN_CREATED_AT, event.createdAt);
+            eventValues.put(EventsContract.EventColumns.COLUMN_PAYLOAD_ACTION, event.payload.action);
+            eventValues.put(EventsContract.EventColumns.COLUMN_PAYLOAD_REF_TAG, event.payload.ref_tag);
+            eventValues.put(EventsContract.EventColumns.COLUMN_PAYLOAD_SIZE, event.payload.size);
+            eventValues.put(EventsContract.EventColumns.COLUMN_PAYLOAD_REF, event.payload.ref);
+            eventValues.put(EventsContract.EventColumns.COLUMN_PAYLOAD_MERGED, (event.payload.merged)?1:0);
             eventValuesVector.add(eventValues);
         }
 

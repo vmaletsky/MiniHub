@@ -3,6 +3,7 @@ package com.example.minihub.feed;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,11 @@ import com.bumptech.glide.Glide;
 import com.example.minihub.R;
 import com.example.minihub.Utilities;
 import com.example.minihub.domain.FeedEvent;
+import com.example.minihub.domain.Payload;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-/**
- * Created by v.maletskiy on 7/18/2017.
- */
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     private String TAG = getClass().getSimpleName();
@@ -49,6 +47,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 event.id = cursor.getLong(FeedFragment.COL_EVENT_ID);
                 event.createdAt = cursor.getString(FeedFragment.COL_CREATED_AT);
                 event.type = cursor.getString(FeedFragment.COL_EVENT_TYPE);
+                event.payload = new Payload();
+                event.payload.action = cursor.getString(FeedFragment.COL_ACTION);
+                event.payload.ref_tag = cursor.getString(FeedFragment.COL_REF_TAG);
+                event.payload.ref = cursor.getString(FeedFragment.COL_REF);
+                event.payload.size = cursor.getInt(FeedFragment.COL_SIZE);
+                event.payload.merged = (cursor.getInt(FeedFragment.COL_MERGED) == 1);
                 event.repo = new Repository();
                 event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
                 event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
@@ -59,8 +63,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
 
                 User actor = event.actor;
-                holder.eventTextView.setText(actor.login + Utilities.getActionByEventType(event.type) + event.repo.name +
-                        " at " + event.createdAt);
+                holder.eventTextView.setText(Html.fromHtml(actor.login  +
+                        Utilities.getActionByEventType(event.type, event.payload) + event.repo.name));
                 Glide.with(context)
                         .load(actor.avatarUrl)
                         .override(152, 152)
