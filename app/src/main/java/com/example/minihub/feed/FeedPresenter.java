@@ -23,6 +23,12 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> {
 
     public void loadData(boolean isRefreshing, int page) {
         mFeedAsyncTask = new FeedAsyncTask(mContext, isRefreshing, page);
+        mFeedAsyncTask.mListener = new FeedAsyncTask.OnLoad() {
+            @Override
+            public void onLoaded() {
+
+            }
+        };
         mFeedAsyncTask.execute();
     }
 

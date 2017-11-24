@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.example.minihub.R;
 import com.example.minihub.data.EventsContract;
@@ -41,6 +42,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
+
     EndlessRecyclerOnScrollListener mScrollListener;
 
     private int mPage;
@@ -169,6 +171,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         String token = sp.getString(getString(R.string.access_token_pref_id), null);
         return token;
     }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

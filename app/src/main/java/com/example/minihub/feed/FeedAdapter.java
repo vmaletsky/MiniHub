@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidessence.recyclerviewcursoradapter.RecyclerViewCursorAdapter;
@@ -26,25 +27,52 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
     private String TAG = getClass().getSimpleName();
     private Context mContext;
 
+
+    private LayoutInflater mInflater;
+
+    private static final int VIEWTYPE_ITEM = 1;
+    private static final int VIEWTYPE_LOADER = 2;
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position != 0 && position == getItemCount() - 1) {
+            return VIEWTYPE_LOADER;
+        }
+
+        return VIEWTYPE_ITEM;
+    }
+
+    @Override
+    public int getItemCount() {
+        return mCursorAdapter.getCount() + 1;
+    }
+
     protected FeedAdapter(Context context) {
         super(context);
         this.mContext = context;
-
+        this.mInflater = LayoutInflater.from(mContext);
         setupCursorAdapter(null, 0, R.layout.feed_element, false);
     }
 
     @Override
-    public FeedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent));
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEWTYPE_ITEM) {
+            return new ViewHolder(mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent), VIEWTYPE_ITEM);
+        } else if (viewType == VIEWTYPE_LOADER) {
+            View view = mInflater.inflate(R.layout.loader_item_layout, parent, false);
+            return new ViewHolder(view, VIEWTYPE_LOADER);
+        }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        mCursorAdapter.getCursor().moveToPosition(position);
-        setViewHolder(holder);
-        mCursorAdapter.bindView(null, mContext, mCursorAdapter.getCursor());
+        if (position < mCursorAdapter.getCount()) {
+            mCursorAdapter.getCursor().moveToPosition(position);
+            setViewHolder(holder);
+            mCursorAdapter.bindView(null, mContext, mCursorAdapter.getCursor());
+        }
     }
-
 
     class ViewHolder extends RecyclerViewCursorViewHolder {
 
@@ -54,11 +82,17 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
 
         public TextView timeTextView;
 
-        public ViewHolder(View itemView) {
+        public ProgressBar progressBar;
+
+        public ViewHolder(View itemView, int viewType) {
             super(itemView);
-            this.avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
-            this.eventTextView = (TextView) itemView.findViewById(R.id.event_text);
-            this.timeTextView = (TextView) itemView.findViewById(R.id.time_text);
+            if (viewType == VIEWTYPE_ITEM) {
+                this.avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
+                this.eventTextView = (TextView) itemView.findViewById(R.id.event_text);
+                this.timeTextView = (TextView) itemView.findViewById(R.id.time_text);
+            } else if (viewType == VIEWTYPE_LOADER) {
+                this.progressBar = (ProgressBar) itemView.findViewById(R.id.item_progress_bar);
+            }
         }
 
         @Override

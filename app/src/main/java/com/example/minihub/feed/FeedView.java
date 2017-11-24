@@ -8,4 +8,5 @@ import java.util.List;
 public interface FeedView extends MvpView {
 
     String getAccessToken();
+
 }

@@ -30,6 +30,12 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
     private boolean mIsRefreshing;
     private int mPage;
 
+    public OnLoad mListener;
+
+    public interface OnLoad {
+        void onLoaded();
+    }
+
     public FeedAsyncTask(Context context, boolean isRefreshing, int page) {
         mContext = context;
         mIsRefreshing = isRefreshing;
@@ -55,6 +61,7 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
     @Override
     protected void onPostExecute(List<FeedEvent> feedEvents) {
         cacheEvents(feedEvents);
+        mListener.onLoaded();
     }
 
     private void cacheEvents(List<FeedEvent> events) {
