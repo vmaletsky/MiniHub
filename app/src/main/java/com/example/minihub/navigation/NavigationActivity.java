@@ -54,7 +54,7 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         mFragmentManager = getSupportFragmentManager();
 
         mFragmentManager.beginTransaction()
-                .add(R.id.feed_container, mFeedFragment, null)
+                .replace(R.id.feed_container, mFeedFragment, null)
                 .commit();
     }
 

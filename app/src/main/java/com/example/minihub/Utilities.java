@@ -13,8 +13,28 @@ public class Utilities {
             case "CommitCommentEvent": return "<b> commented on commit </b> in ";
             case "IssuesEvent": return " <b>" + payload.action + "</b> issue in ";
             case "CreateEvent": return "<b> created " + payload.ref_tag+"</b>";
+            case "PullRequestReviewEvent": return "<b>" + getPullRequestReviewAction(payload) + "</b>";
+            case "PullRequestReviewCommentEvent": return "<b>" + getPullRequestReviewCommentAction(payload) + "</b>";
         }
         return eventType;
+    }
+
+    private static String getPullRequestReviewAction(Payload payload) {
+        switch (payload.action) {
+            case "submitted": return "reviewed pull request";
+            case "edited": return "edited pull request review";
+            case "dismissed": return "dismissed pull request review";
+        }
+        return null;
+    }
+
+    private static String getPullRequestReviewCommentAction(Payload payload) {
+        switch (payload.action) {
+            case "created": return "commented on pull request";
+            case "edited": return "edited comment on pull request";
+            case "deleted": return "deleted comment on pull request";
+        }
+        return null;
     }
 
     public static String getIssueCommentAction(Payload payload) {

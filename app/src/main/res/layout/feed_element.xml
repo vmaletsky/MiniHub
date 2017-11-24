@@ -3,31 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_margin="16dp"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
         android:layout_width="wrap_content"
         android:minWidth="72dp"
+        android:layout_alignTop="@+id/event_text"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/ic_launcher_round"
         />
     <TextView
         android:id="@+id/event_text"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_toRightOf="@id/avatar"
-        android:layout_marginStart="16dp"/>
+        android:textSize="16sp"
+        android:layout_toRightOf="@id/avatar" />
     <TextView
         android:id="@+id/time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_below="@id/event_text"
         android:layout_toRightOf="@id/avatar"
-        android:layout_marginStart="16dp"
 />
 
 </RelativeLayout>

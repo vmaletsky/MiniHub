@@ -20,7 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView {
+public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView
+{
 
     String TAG = getClass().getSimpleName();
 

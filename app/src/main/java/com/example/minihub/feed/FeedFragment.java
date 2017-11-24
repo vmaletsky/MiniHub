@@ -74,11 +74,9 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, view);
         mPage = 1;
-        mFeedAdapter = new FeedAdapter(getActivity(), null);
+        mFeedAdapter = new FeedAdapter(getActivity());
         Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        mFeedList.addItemDecoration(dividerItemDecoration);
         mFeedList.setLayoutManager(layoutManager);
         mScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
@@ -179,7 +177,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mRefreshFeed.setRefreshing(false);
         if (data.moveToFirst()) {
             mFeedAdapter.notifyDataSetChanged();
-            mFeedAdapter.dataSetChanged();
         }
     }
 
