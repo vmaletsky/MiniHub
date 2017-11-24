@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,13 @@ import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.domain.Payload;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
+import com.github.marlonlom.utilities.timeago.TimeAgo;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -115,10 +123,18 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
             event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
             event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
             event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
-
             User actor = event.actor;
             eventTextView.setText(Html.fromHtml(actor.login +
                     Utilities.getActionByEventType(event.type, event.payload) + event.repo.name));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+                Date date = sdf.parse(event.createdAt);
+                timeTextView.setText(TimeAgo.using(date.getTime()));
+            } catch (ParseException e) {
+                Log.e(TAG, e.getMessage());
+            }
+
             Glide.with(mContext)
                     .load(actor.avatarUrl)
                     .override(152, 152)

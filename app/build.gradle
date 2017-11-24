@@ -45,6 +45,7 @@ dependencies {
     compile 'com.hannesdorfmann.mosby3:mvp:3.0.4'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.androidessence:recyclerviewcursoradapter:1.0.0'
+    compile 'com.github.marlonlom:timeago:3.0.1'
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'

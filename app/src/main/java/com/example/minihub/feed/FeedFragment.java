@@ -111,8 +111,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     public void onResume() {
         super.onResume();
         mScrollListener.reset(0, true);
-        presenter.loadData(true, 1);
-        getLoaderManager().restartLoader(0, null, this);
+
 
     }
 

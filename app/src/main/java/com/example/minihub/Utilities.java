@@ -8,13 +8,13 @@ public class Utilities {
         switch (eventType) {
             case "PushEvent":
                 return "<b> pushed " + payload.size + " commits </b> to " + getBranchFromRef(payload.ref) + " at ";
-            case "IssueCommentEvent": return " <b>" + getIssueCommentAction(payload) + "</b> on issue in ";
-            case "PullRequestEvent": return " <b>" + getPullRequestAction(payload) + " pull request </b> in ";
+            case "IssueCommentEvent": return " <b> " + getIssueCommentAction(payload) + "</b> on issue in ";
+            case "PullRequestEvent": return " <b> " + getPullRequestAction(payload) + " pull request </b> in ";
             case "CommitCommentEvent": return "<b> commented on commit </b> in ";
-            case "IssuesEvent": return " <b>" + payload.action + "</b> issue in ";
+            case "IssuesEvent": return "<b> " + payload.action + "</b> issue in ";
             case "CreateEvent": return "<b> created " + payload.ref_tag+"</b>";
-            case "PullRequestReviewEvent": return "<b>" + getPullRequestReviewAction(payload) + "</b>";
-            case "PullRequestReviewCommentEvent": return "<b>" + getPullRequestReviewCommentAction(payload) + "</b>";
+            case "PullRequestReviewEvent": return "<b> " + getPullRequestReviewAction(payload) + "</b>";
+            case "PullRequestReviewCommentEvent": return "<b> " + getPullRequestReviewCommentAction(payload) + "</b>";
         }
         return eventType;
     }
