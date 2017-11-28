@@ -9,4 +9,5 @@ public interface FeedView extends MvpView {
 
     String getAccessToken();
 
+    void setRefreshing(boolean isRefreshing);
 }

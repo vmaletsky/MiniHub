@@ -31,6 +31,21 @@ import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.minihub.feed.FeedPresenter.COL_ACTION;
+import static com.example.minihub.feed.FeedPresenter.COL_AVATAR_URL;
+import static com.example.minihub.feed.FeedPresenter.COL_CREATED_AT;
+import static com.example.minihub.feed.FeedPresenter.COL_EVENT_ID;
+import static com.example.minihub.feed.FeedPresenter.COL_EVENT_TYPE;
+import static com.example.minihub.feed.FeedPresenter.COL_MERGED;
+import static com.example.minihub.feed.FeedPresenter.COL_REF;
+import static com.example.minihub.feed.FeedPresenter.COL_REF_TAG;
+import static com.example.minihub.feed.FeedPresenter.COL_REPO_ID;
+import static com.example.minihub.feed.FeedPresenter.COL_REPO_NAME;
+import static com.example.minihub.feed.FeedPresenter.COL_SIZE;
+import static com.example.minihub.feed.FeedPresenter.COL_USER_ID;
+import static com.example.minihub.feed.FeedPresenter.COL_USER_LOGIN;
+import static com.example.minihub.feed.FeedPresenter.COL_USER_NAME;
+
 public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolder> {
     private String TAG = getClass().getSimpleName();
     private Context mContext;
@@ -106,23 +121,23 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
         @Override
         public void bindCursor(Cursor cursor) {
             FeedEvent event = new FeedEvent();
-            event.id = cursor.getLong(FeedFragment.COL_EVENT_ID);
-            event.createdAt = cursor.getString(FeedFragment.COL_CREATED_AT);
-            event.type = cursor.getString(FeedFragment.COL_EVENT_TYPE);
+            event.id = cursor.getLong(COL_EVENT_ID);
+            event.createdAt = cursor.getString(COL_CREATED_AT);
+            event.type = cursor.getString(COL_EVENT_TYPE);
             event.payload = new Payload();
-            event.payload.action = cursor.getString(FeedFragment.COL_ACTION);
-            event.payload.ref_tag = cursor.getString(FeedFragment.COL_REF_TAG);
-            event.payload.ref = cursor.getString(FeedFragment.COL_REF);
-            event.payload.size = cursor.getInt(FeedFragment.COL_SIZE);
-            event.payload.merged = (cursor.getInt(FeedFragment.COL_MERGED) == 1);
+            event.payload.action = cursor.getString(COL_ACTION);
+            event.payload.ref_tag = cursor.getString(COL_REF_TAG);
+            event.payload.ref = cursor.getString(COL_REF);
+            event.payload.size = cursor.getInt(COL_SIZE);
+            event.payload.merged = (cursor.getInt(COL_MERGED) == 1);
             event.repo = new Repository();
-            event.repo.id = cursor.getInt(FeedFragment.COL_REPO_ID);
-            event.repo.name = cursor.getString(FeedFragment.COL_REPO_NAME);
+            event.repo.id = cursor.getInt(COL_REPO_ID);
+            event.repo.name = cursor.getString(COL_REPO_NAME);
             event.actor = new User();
-            event.actor.id = cursor.getInt(FeedFragment.COL_USER_ID);
-            event.actor.login = cursor.getString(FeedFragment.COL_USER_LOGIN);
-            event.actor.name = cursor.getString(FeedFragment.COL_USER_NAME);
-            event.actor.avatarUrl = cursor.getString(FeedFragment.COL_AVATAR_URL);
+            event.actor.id = cursor.getInt(COL_USER_ID);
+            event.actor.login = cursor.getString(COL_USER_LOGIN);
+            event.actor.name = cursor.getString(COL_USER_NAME);
+            event.actor.avatarUrl = cursor.getString(COL_AVATAR_URL);
             User actor = event.actor;
             eventTextView.setText(Html.fromHtml(actor.login +
                     Utilities.getActionByEventType(event.type, event.payload) + event.repo.name));
