@@ -23,13 +23,13 @@ import java.util.List;
 public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderManager.LoaderCallbacks<Cursor>  {
     private String TAG = getClass().getSimpleName();
 
-    FeedAsyncTask mFeedAsyncTask;
+    private FeedAsyncTask mFeedAsyncTask;
 
-    FeedAdapter mFeedAdapter;
+    private FeedAdapter mFeedAdapter;
 
-    Context mContext;
+    private Context mContext;
 
-    LoaderManager mLoaderManager;
+    private LoaderManager mLoaderManager;
 
     public String EVENT_COLUMNS[] =  {
             EventsContract.EventColumns.TABLE_NAME + "." + EventsContract.EventColumns.COLUMN_EVENT_ID + " AS _id",
