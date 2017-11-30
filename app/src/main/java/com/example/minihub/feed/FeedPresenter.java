@@ -110,7 +110,9 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mFeedAdapter.swapCursor(data);
         Log.v(TAG, "onLoadFinished: " + String.valueOf(data.getCount()));
-        getView().setRefreshing(false);
+        if (getView() != null) {
+            getView().setRefreshing(false);
+        }
         if (data.moveToFirst()) {
             mFeedAdapter.notifyDataSetChanged();
         }

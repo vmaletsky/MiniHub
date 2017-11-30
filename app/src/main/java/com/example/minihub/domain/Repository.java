@@ -36,4 +36,7 @@ public class Repository {
 
     @SerializedName("language")
     public String language;
+
+    @SerializedName("fork")
+    public boolean isFork;
 }

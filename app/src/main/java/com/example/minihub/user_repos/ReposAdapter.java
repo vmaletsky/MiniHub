@@ -12,6 +12,9 @@ import com.example.minihub.domain.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by volod on 8/26/2017.
  */
@@ -39,6 +42,9 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Repository repo = repos.get(position);
         holder.repoName.setText(repo.name);
+        holder.starsCount.setText(Integer.toString(repo.stargazersCount));
+        holder.forksCount.setText(Integer.toString(repo.forksCount));
+        holder.language.setText(repo.language);
     }
 
     @Override
@@ -48,11 +54,18 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
 
     class ViewHolder  extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.repo_name)
         TextView repoName;
+        @BindView(R.id.stargazers_count)
+        TextView starsCount;
+        @BindView(R.id.forks_count)
+        TextView forksCount;
+        @BindView(R.id.language)
+        TextView language;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.repoName = (TextView) itemView.findViewById(R.id.repo_name);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
