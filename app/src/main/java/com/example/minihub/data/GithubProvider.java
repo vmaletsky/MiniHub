@@ -162,7 +162,9 @@ public class GithubProvider extends ContentProvider{
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
             default:
+                getContext().getContentResolver().notifyChange(uri, null);
                 return super.bulkInsert(uri, values);
+
         }
     }
 

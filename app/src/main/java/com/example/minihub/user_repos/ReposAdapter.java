@@ -1,13 +1,18 @@
 package com.example.minihub.user_repos;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidessence.recyclerviewcursoradapter.RecyclerViewCursorAdapter;
+import com.androidessence.recyclerviewcursoradapter.RecyclerViewCursorViewHolder;
 import com.example.minihub.R;
 import com.example.minihub.domain.Repository;
+import com.example.minihub.feed.FeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +20,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by volod on 8/26/2017.
- */
+import static com.example.minihub.user_repos.UserReposPresenter.COL_FORKS_COUNT;
+import static com.example.minihub.user_repos.UserReposPresenter.COL_LANGUAGE;
+import static com.example.minihub.user_repos.UserReposPresenter.COL_REPO_ID;
+import static com.example.minihub.user_repos.UserReposPresenter.COL_REPO_NAME;
+import static com.example.minihub.user_repos.UserReposPresenter.COL_STARGAZERS_COUNT;
+import static com.example.minihub.user_repos.UserReposPresenter.COL_WATCHERS_COUNT;
 
-public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> {
 
-    private List<Repository> repos;
-
-    public ReposAdapter() {
-        repos = new ArrayList<>();
-    }
-
-    public void setRepos(List<Repository> repos) {
-        this.repos = repos;
-    }
+public class ReposAdapter extends RecyclerViewCursorAdapter<ReposAdapter.ViewHolder> {
+    private String TAG = getClass().getSimpleName();
+    private Context mContext;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,19 +41,25 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Repository repo = repos.get(position);
-        holder.repoName.setText(repo.name);
-        holder.starsCount.setText(Integer.toString(repo.stargazersCount));
-        holder.forksCount.setText(Integer.toString(repo.forksCount));
-        holder.language.setText(repo.language);
+        if (position < mCursorAdapter.getCount()) {
+            mCursorAdapter.getCursor().moveToPosition(position);
+            setViewHolder(holder);
+            mCursorAdapter.bindView(null, mContext, mCursorAdapter.getCursor());
+        }
+    }
+
+    protected ReposAdapter(Context context) {
+        super(context);
+        mContext = context;
+        setupCursorAdapter(null, 0, R.layout.repo_list_element, false);
     }
 
     @Override
     public int getItemCount() {
-        return repos.size();
+        return mCursorAdapter.getCount();
     }
 
-    class ViewHolder  extends RecyclerView.ViewHolder {
+    class ViewHolder  extends RecyclerViewCursorViewHolder {
 
         @BindView(R.id.repo_name)
         TextView repoName;
@@ -66,6 +73,21 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void bindCursor(Cursor cursor) {
+            Repository repo = new Repository();
+            repo.id = cursor.getInt(COL_REPO_ID);
+            repo.name = cursor.getString(COL_REPO_NAME);
+            repo.language = cursor.getString(COL_LANGUAGE);
+            repo.forksCount = cursor.getInt(COL_FORKS_COUNT);
+            repo.stargazersCount = cursor.getInt(COL_STARGAZERS_COUNT);
+            repo.watchersCount = cursor.getInt(COL_WATCHERS_COUNT);
+            repoName.setText(repo.name);
+            starsCount.setText(Integer.toString(repo.stargazersCount));
+            forksCount.setText(Integer.toString(repo.forksCount));
+            language.setText(repo.language);
         }
     }
 }

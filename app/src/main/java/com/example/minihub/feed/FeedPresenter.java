@@ -21,6 +21,7 @@ import java.util.List;
 
 
 public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderManager.LoaderCallbacks<Cursor>  {
+    private static final int FEED_LOADER = 200;
     private String TAG = getClass().getSimpleName();
 
     private FeedAsyncTask mFeedAsyncTask;
@@ -84,7 +85,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
     static final int COL_REPO_NAME = 13;
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        mLoaderManager.initLoader(0, null, this);
+        mLoaderManager.initLoader(FEED_LOADER, null, this);
     }
 
 
@@ -108,13 +109,15 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mFeedAdapter.swapCursor(data);
-        Log.v(TAG, "onLoadFinished: " + String.valueOf(data.getCount()));
-        if (getView() != null) {
-            getView().setRefreshing(false);
-        }
-        if (data.moveToFirst()) {
-            mFeedAdapter.notifyDataSetChanged();
+        if (loader.getId() == FEED_LOADER) {
+            mFeedAdapter.swapCursor(data);
+            Log.v(TAG, "onLoadFinished: " + String.valueOf(data.getCount()));
+            if (getView() != null) {
+                getView().setRefreshing(false);
+            }
+            if (data.moveToFirst()) {
+                mFeedAdapter.notifyDataSetChanged();
+            }
         }
     }
 

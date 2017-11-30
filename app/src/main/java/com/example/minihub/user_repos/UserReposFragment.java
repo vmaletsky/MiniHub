@@ -3,10 +3,12 @@ package com.example.minihub.user_repos;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,13 @@ import com.example.minihub.R;
 import com.example.minihub.domain.Repository;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView
-{
+public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView {
 
     String TAG = getClass().getSimpleName();
 
@@ -46,7 +48,7 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
                 presenter.loadRepos();
             }
         });
-        mAdapter = new ReposAdapter();
+        mAdapter = new ReposAdapter(getContext());
         mReposList.setAdapter(mAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mReposList.setLayoutManager(layoutManager);
@@ -54,13 +56,19 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mReposList.getContext(),
                 layoutManager.getOrientation());
         mReposList.addItemDecoration(dividerItemDecoration);
-        return  view;
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.loadRepos();
+        presenter.onResume();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        presenter.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -72,7 +80,6 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
     @Override
     public void showRepos(List<Repository> repos) {
-        mAdapter.setRepos(repos);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -83,7 +90,12 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
     @Override
     public UserReposPresenter createPresenter() {
-        return new UserReposPresenter();
+        return new UserReposPresenter(getContext(), mAdapter, getActivity().getLoaderManager());
+    }
+
+    @Override
+    public void setRefreshing(boolean isRefreshing) {
+        mLayoutRepos.setRefreshing(isRefreshing);
     }
 
     @Override
