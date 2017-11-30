@@ -26,4 +26,10 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> {
         });
         task.execute(getView().getAccessToken());
     }
+
+    void onDestroyView() {
+        if (task != null && !task.isCancelled()) {
+            task.cancel(true);
+        }
+    }
 }

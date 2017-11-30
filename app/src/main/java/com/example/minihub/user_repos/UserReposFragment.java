@@ -86,5 +86,9 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
         return new UserReposPresenter();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroyView();
+    }
 }
