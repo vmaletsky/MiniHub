@@ -66,6 +66,12 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.loadRepos();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         presenter.onActivityCreated(savedInstanceState);

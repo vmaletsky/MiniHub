@@ -64,9 +64,10 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
     }
 
     private void cacheRepos(List<Repository> repos) {
-        ContentValues values = new ContentValues();
+
         Vector<ContentValues> reposValuesVector = new Vector<>(repos.size());
         for (Repository repo : repos) {
+            ContentValues values = new ContentValues();
             values.put(RepoContract.RepoColumns.COLUMN_REPO_ID, repo.id);
             values.put(RepoContract.RepoColumns.COLUMN_NAME, repo.name);
             values.put(RepoContract.RepoColumns.COLUMN_FORKS_COUNT, repo.forksCount);
@@ -96,14 +97,16 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri reposUri = RepoContract.RepoColumns.CONTENT_URI;
-        CursorLoader loader = new CursorLoader(mContext,
-                reposUri,
-                REPOS_COLUMNS,
-                null,
-                null,
-                null);
-        return loader;
+        if (id == REPOS_LOADER) {
+            Uri reposUri = RepoContract.RepoColumns.CONTENT_URI;
+            CursorLoader loader = new CursorLoader(mContext,
+                    reposUri,
+                    REPOS_COLUMNS,
+                    null,
+                    null,
+                    null);
+            return loader;
+        } else return null;
     }
 
     public String REPOS_COLUMNS[] = {
@@ -134,7 +137,9 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mReposAdapter.swapCursor(null);
+        if (loader.getId() == REPOS_LOADER) {
+            mReposAdapter.swapCursor(null);
+        }
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -143,9 +143,9 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
             reposValuesVector.toArray(cvArray);
 
             // delete old data
-            if (mIsRefreshing) {
+         /*   if (mIsRefreshing) {
                 mContext.getContentResolver().delete(RepoContract.RepoColumns.CONTENT_URI, null, null);
-            }
+            }*/
             mContext.getContentResolver().bulkInsert(RepoContract.RepoColumns.CONTENT_URI, cvArray);
         }
 
