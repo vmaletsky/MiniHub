@@ -90,9 +90,7 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
     }
 
     void onDestroyView() {
-        if (task != null && !task.isCancelled()) {
-            task.cancel(true);
-        }
+        mLoaderManager.destroyLoader(REPOS_LOADER);
     }
 
     @Override
