@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.example.minihub.data.EventsContract;
@@ -104,7 +106,17 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
 
             }
         };
+        mFeedAsyncTask.mErrorListener = new FeedAsyncTask.OnError() {
+            @Override
+            public void onError(int errorCode) {
+                getView().setErrorMessage(errorCode);
+            }
+        };
         mFeedAsyncTask.execute();
+    }
+
+    private int getErrorMessage(String message) {
+        return 0;
     }
 
     @Override

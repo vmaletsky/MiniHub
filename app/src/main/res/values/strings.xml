@@ -9,4 +9,8 @@
     <string name="current_user_avatar_url">current_user_avatar_url</string>
     <string name="sync_account_type">com.example.minihub</string>
     <string name="content_authority">com.example.minihub.data</string>
+    <string name="error_no_network">Check your network connection</string>
+    <string name="error_incorrect_data">Server error</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="retry_action">Retry</string>
 </resources>

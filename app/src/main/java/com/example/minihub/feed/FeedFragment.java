@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.minihub.R;
+import com.example.minihub.network.FeedAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.ArrayList;
@@ -26,8 +29,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.example.minihub.network.FeedAsyncTask.ERROR_INCORRECT_DATA;
+import static com.example.minihub.network.FeedAsyncTask.ERROR_NO_NETWORK;
+
 public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
-        implements FeedView, SwipeRefreshLayout.OnRefreshListener {
+        implements FeedView, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     String TAG = getClass().getSimpleName();
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
@@ -80,12 +86,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         };
         mFeedList.addOnScrollListener(mScrollListener);
         mFeedList.setAdapter(mFeedAdapter);
-        Timber.plant(new Timber.Tree() {
-            @Override
-            protected void log(int priority, String tag, String message, Throwable t) {
-                Log.v(tag, message);
-            }
-        });
         mRefreshFeed.setOnRefreshListener(this);
         return view;
     }
@@ -116,8 +116,29 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mRefreshFeed.setRefreshing(isRefreshing);
     }
 
+    @Override
+    public void setErrorMessage(@FeedAsyncTask.Error int errorCode) {
+        Snackbar.make(mFeedList, getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry_action, this)
+                .show();
+    }
+
+    private int getErrorMessage(@FeedAsyncTask.Error int errorCode) {
+        switch (errorCode) {
+            case ERROR_INCORRECT_DATA: return R.string.error_incorrect_data;
+            case ERROR_NO_NETWORK: return R.string.error_no_network;
+            default: return R.string.unknown_error;
+        }
+    }
+
 
     public void onRefresh() {
+        mScrollListener.reset(0, true);
+        presenter.loadData(true, 1);
+    }
+
+    @Override
+    public void onClick(View v) {
         mScrollListener.reset(0, true);
         presenter.loadData(true, 1);
     }

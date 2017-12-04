@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.example.minihub.R;
@@ -17,6 +18,8 @@ import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
 
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +33,21 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
     private boolean mIsRefreshing;
     private int mPage;
 
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ERROR_INCORRECT_DATA, ERROR_NO_NETWORK})
+    public @interface Error{}
+
+    // Declare the constants
+    public static final int ERROR_INCORRECT_DATA = 0;
+    public static final int ERROR_NO_NETWORK = 1;
+
     public OnLoad mListener;
+
+    public OnError mErrorListener;
+
+    public interface OnError {
+        void onError(@Error int errorCode);
+    }
 
     public interface OnLoad {
         void onLoaded();
@@ -50,9 +67,13 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
         List<FeedEvent> events = new ArrayList<>();
         try {
             Response<List<FeedEvent>> response = service.getUserEvents(mPage, 10).execute();
-            events = response.body();
+            if (response.isSuccessful()) {
+                events = response.body();
+            } else {
+                mErrorListener.onError(ERROR_INCORRECT_DATA);
+            }
         } catch (IOException e) {
-            Log.v(TAG, e.getMessage());
+            mErrorListener.onError(ERROR_NO_NETWORK);
         }
         return events;
     }
