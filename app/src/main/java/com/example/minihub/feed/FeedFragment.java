@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.minihub.R;
+import com.example.minihub.Utilities;
 import com.example.minihub.network.FeedAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
@@ -118,19 +119,10 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @Override
     public void setErrorMessage(@FeedAsyncTask.Error int errorCode) {
-        Snackbar.make(mFeedList, getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_INDEFINITE)
+        Snackbar.make(mFeedList, Utilities.getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_INDEFINITE)
                 .setAction(R.string.retry_action, this)
                 .show();
     }
-
-    private int getErrorMessage(@FeedAsyncTask.Error int errorCode) {
-        switch (errorCode) {
-            case ERROR_INCORRECT_DATA: return R.string.error_incorrect_data;
-            case ERROR_NO_NETWORK: return R.string.error_no_network;
-            default: return R.string.unknown_error;
-        }
-    }
-
 
     public void onRefresh() {
         mScrollListener.reset(0, true);

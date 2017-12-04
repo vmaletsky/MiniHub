@@ -110,13 +110,10 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
             @Override
             public void onError(int errorCode) {
                 getView().setErrorMessage(errorCode);
+                getView().setRefreshing(false);
             }
         };
         mFeedAsyncTask.execute();
-    }
-
-    private int getErrorMessage(String message) {
-        return 0;
     }
 
     @Override

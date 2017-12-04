@@ -57,7 +57,12 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
                     cacheRepos(repos);
                     getView().onLoadFinished();
                 }
-
+            }
+        }, new ReposAsyncTask.ErrorListener() {
+            @Override
+            public void onError(int errorCode) {
+                getView().setErrorMessage(errorCode);
+                getView().setRefreshing(false);
             }
         });
         task.execute(getView().getAccessToken());

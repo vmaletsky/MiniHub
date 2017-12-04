@@ -21,8 +21,8 @@ public interface GithubService {
     Call<List<FeedEvent>> getUserEvents(@Query("page") int page, @Query("per_page") int perPage);
 
     @GET("/user/repos")
-    Call<Repository[]> getUserRepos();
+    Call<List<Repository>> getUserRepos();
 
     @GET("/user/subscriptions")
-    Call<Repository[]> getWatchedRepos();
+    Call<List<Repository>> getWatchedRepos();
 }

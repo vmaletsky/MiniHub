@@ -13,4 +13,6 @@ public interface UserReposView extends MvpView {
     void showRepos(List<Repository> repos);
 
     void setRefreshing(boolean isRefreshing);
+
+    void setErrorMessage(int errorCode);
 }

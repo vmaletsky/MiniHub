@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.minihub.R;
+import com.example.minihub.Utilities;
 import com.example.minihub.domain.Repository;
+import com.example.minihub.network.FeedAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.ArrayList;
@@ -23,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView {
+public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView, View.OnClickListener {
 
     String TAG = getClass().getSimpleName();
 
@@ -63,6 +67,13 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     public void onResume() {
         super.onResume();
         presenter.onResume();
+    }
+
+    @Override
+    public void setErrorMessage(@FeedAsyncTask.Error int errorCode) {
+        Snackbar.make(mReposList, Utilities.getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry_action, this)
+                .show();
     }
 
     @Override
@@ -108,5 +119,10 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroyView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        presenter.loadRepos();
     }
 }
