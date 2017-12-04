@@ -2,9 +2,6 @@ package com.example.minihub.domain;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by v.maletskiy on 8/31/2017.
- */
 
 public class Organization {
     @SerializedName("login")

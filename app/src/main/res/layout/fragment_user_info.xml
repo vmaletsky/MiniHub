@@ -14,14 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/user_name"
-        android:text="John Doe"
-        android:layout_toRightOf="@id/user_pic"/>
+        android:layout_toEndOf="@id/user_pic"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/user_login"
-        android:text="johndoe1"
-        android:layout_toRightOf="@id/user_pic"
+        android:layout_toEndOf="@id/user_pic"
         android:layout_below="@id/user_name"/>
 
 </RelativeLayout>

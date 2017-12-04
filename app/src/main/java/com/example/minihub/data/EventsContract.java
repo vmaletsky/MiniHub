@@ -4,9 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-/**
- * Created by Daryna on 03.09.17.
- */
 
 public final class EventsContract {
 

@@ -5,9 +5,6 @@ import com.example.minihub.domain.User;
 import com.example.minihub.network.AuthAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-/**
- * Created by v.maletskiy on 8/21/2017.
- */
 
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
     AuthAsyncTask authAsyncTask;

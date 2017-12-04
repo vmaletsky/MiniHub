@@ -2,10 +2,6 @@ package com.example.minihub.domain;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by volod on 8/13/2017.
- */
-
 public class AccessToken {
     @SerializedName("access_token")
     private String accessToken;

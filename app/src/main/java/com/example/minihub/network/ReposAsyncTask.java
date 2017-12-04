@@ -15,10 +15,6 @@ import java.util.List;
 
 import retrofit2.Response;
 
-/**
- * Created by volod on 8/26/2017.
- */
-
 public class ReposAsyncTask extends AsyncTask<String, Void, List<Repository>> {
     private String TAG = getClass().getSimpleName();
 

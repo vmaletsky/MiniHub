@@ -11,10 +11,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by volod on 8/27/2017.
- */
-
 public class AuthAsyncTask extends AsyncTask<String, Void, AccessToken> {
     private static String CLIENT_ID = "651300e25050131ec8ef";
     private static String CLIENT_SECRET = "04e7098776e98846d0170429971b847d2fbc8ad0";

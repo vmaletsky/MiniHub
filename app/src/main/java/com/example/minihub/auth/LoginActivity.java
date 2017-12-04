@@ -53,7 +53,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
                 presenter.requestAuthToken(code);
             } else if (uri.getQueryParameter("error") != null) {
                 // show an error message here
-                Toast.makeText(this, uri.getQueryParameter("error").toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, uri.getQueryParameter("error"), Toast.LENGTH_SHORT).show();
             }
         }
     }

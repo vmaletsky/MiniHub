@@ -2,10 +2,6 @@ package com.example.minihub.domain;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by v.maletskiy on 7/18/2017.
- */
-
 public class FeedEvent {
 
     @SerializedName("created_at")

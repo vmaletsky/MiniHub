@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/item_feed" android:title="Feed"></item>
-    <item android:id="@+id/item_repos" android:title="Repositories"></item>
-    <item  android:id="@+id/item_user_info" android:title="User info"></item>
-    <item android:id="@+id/item_log_out" android:title="Log out"></item>
+    <item android:id="@+id/item_feed" android:title="@string/feed_menu_item"></item>
+    <item android:id="@+id/item_repos" android:title="@string/repos_menu_item"></item>
+    <item  android:id="@+id/item_user_info" android:title="@string/user_info_menu_item"></item>
+    <item android:id="@+id/item_log_out" android:title="@string/log_out_menu_item"></item>
 </menu>
