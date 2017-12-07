@@ -63,10 +63,11 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
     protected List<FeedEvent> doInBackground(String... strings) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         String token = sp.getString(mContext.getString(R.string.access_token_pref_id), null);
+        String username = sp.getString(mContext.getString(R.string.current_user_login), null);
         GithubService service = ServiceGenerator.createService(GithubService.class, token);
         List<FeedEvent> events = new ArrayList<>();
         try {
-            Response<List<FeedEvent>> response = service.getUserEvents(mPage, 10).execute();
+            Response<List<FeedEvent>> response = service.getUserEvents(username, mPage, 10).execute();
             if (response.isSuccessful()) {
                 events = response.body();
             } else {

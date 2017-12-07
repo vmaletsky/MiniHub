@@ -9,6 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -17,8 +18,8 @@ public interface GithubService {
     @GET("/user")
     Call<User> getAuthenticatedUser();
 
-    @GET("/users/vmaletsky/received_events") // TODO: make username parameter
-    Call<List<FeedEvent>> getUserEvents(@Query("page") int page, @Query("per_page") int perPage);
+    @GET("/users/{username}/received_events") // TODO: make username parameter
+    Call<List<FeedEvent>> getUserEvents( @Path("username") String username, @Query("page") int page, @Query("per_page") int perPage);
 
     @GET("/user/repos")
     Call<List<Repository>> getUserRepos();
