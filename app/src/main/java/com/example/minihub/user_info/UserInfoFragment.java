@@ -10,10 +10,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.minihub.R;
 import com.example.minihub.domain.User;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.*;
 
 
@@ -21,6 +26,9 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
     String TAG = getClass().getSimpleName();
 
     TextView mUserName;
+
+    @BindView(R.id.adView)
+    public AdView mAdView;
 
     TextView mUserLogin;
 
@@ -38,9 +46,13 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(com.example.minihub.R.layout.fragment_user_info, container, false);
+        ButterKnife.bind(this, view);
         mUserName = (TextView) view.findViewById(R.id.user_name);
         mUserAvatar = (CircleImageView) view.findViewById(R.id.user_pic);
         mUserLogin = (TextView) view.findViewById(R.id.user_login);
+        mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         return view;
     }
 
@@ -62,10 +74,12 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
 
     @Override
     public void setUserAvatar(String avatarUrl) {
+        RequestOptions options = new RequestOptions();
+        options.override(152, 152)
+                .centerCrop();
         Glide.with(this)
                 .load(avatarUrl)
-                .override(152, 152)
-                .centerCrop()
+                .apply(options)
                 .into(mUserAvatar);
     }
 

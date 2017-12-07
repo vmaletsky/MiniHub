@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import com.example.minihub.R;
 import com.example.minihub.Utilities;
 import com.example.minihub.network.FeedAsyncTask;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
+
+
 
     EndlessRecyclerOnScrollListener mScrollListener;
 
@@ -86,6 +90,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
             }
         };
         mFeedList.addOnScrollListener(mScrollListener);
+
         mFeedList.setAdapter(mFeedAdapter);
         mRefreshFeed.setOnRefreshListener(this);
         return view;

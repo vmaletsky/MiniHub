@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.navigation.NavigationActivity;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainEmptyActivity extends AppCompatActivity {
     String TAG = getClass().getSimpleName();
@@ -16,6 +17,7 @@ public class MainEmptyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
         Intent intent;
         if (userLoggedIn()) {
             Log.v(TAG, "User is logged in");

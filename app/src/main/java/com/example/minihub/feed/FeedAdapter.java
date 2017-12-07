@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.androidessence.recyclerviewcursoradapter.RecyclerViewCursorAdapter;
 import com.androidessence.recyclerviewcursoradapter.RecyclerViewCursorViewHolder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.minihub.R;
 import com.example.minihub.Utilities;
 import com.example.minihub.domain.FeedEvent;
@@ -154,10 +155,14 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
                 Log.e(TAG, e.getMessage());
             }
 
+            RequestOptions myOptions = new RequestOptions()
+                    .override(152, 152)
+                    .centerCrop();
+
+
             Glide.with(mContext)
                     .load(actor.avatarUrl)
-                    .override(152, 152)
-                    .centerCrop()
+                    .apply(myOptions)
                     .into(avatar);
         }
     }
