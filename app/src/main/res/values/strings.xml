@@ -18,4 +18,26 @@
     <string name="log_out_menu_item">Log out</string>
     <string name="star_content_description">Repository stars count</string>
     <string name="forks_count_content_description">Repository forks count</string>
+    <string name="pull_request_review_action_reviewed">reviewed pull request</string>
+    <string name="pull_request_review_action_edited">edited pull request review</string>
+    <string name="pull_request_review_action_dismissed">dismissed pull request review</string>
+    <string name="pull_request_review_comment_commented">commented on pull request</string>
+    <string name="pull_request_review_comment_edited">edited comment on pull request</string>
+    <string name="pull_request_review_comment_deleted">deleted comment on pull request</string>
+    <string name="commented">commented</string>
+    <string name="merged">merged</string>
+    <string name="closed">closed</string>
+    <string name="comment">comment</string>
+    <string name="issue_in">issue in</string>
+    <string name="commented_on_commit">commented on commit</string>
+    <string name="in">in</string>
+    <string name="pull_request">pull request</string>
+    <string name="created">created</string>
+    <string name="on_issue_in">on issue in</string>
+    <string name="to">to</string>
+    <string name="at">at</string>
+    <plurals name="pushed_commits">
+        <item quantity="one"> pushed %d commit </item>
+        <item quantity="other"> pushed %d commits </item>
+    </plurals>
 </resources>

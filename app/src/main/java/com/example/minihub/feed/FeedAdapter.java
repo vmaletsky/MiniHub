@@ -1,14 +1,14 @@
 package com.example.minihub.feed;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,11 +21,13 @@ import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.domain.Payload;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
+import com.example.minihub.network.FeedAsyncTask;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -45,6 +47,8 @@ import static com.example.minihub.feed.FeedPresenter.COL_SIZE;
 import static com.example.minihub.feed.FeedPresenter.COL_USER_ID;
 import static com.example.minihub.feed.FeedPresenter.COL_USER_LOGIN;
 import static com.example.minihub.feed.FeedPresenter.COL_USER_NAME;
+import static com.example.minihub.network.FeedAsyncTask.ERROR_INCORRECT_DATA;
+import static com.example.minihub.network.FeedAsyncTask.ERROR_NO_NETWORK;
 
 public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolder> {
     private String TAG = getClass().getSimpleName();
@@ -139,8 +143,8 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
             event.actor.name = cursor.getString(COL_USER_NAME);
             event.actor.avatarUrl = cursor.getString(COL_AVATAR_URL);
             User actor = event.actor;
-            eventTextView.setText(Html.fromHtml(actor.login +
-                    Utilities.getActionByEventType(event.type, event.payload) + event.repo.name));
+            eventTextView.setText(Html.fromHtml(actor.login + " " +
+                    getActionByEventType(event.type, event.payload) + " " + event.repo.name));
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             try {
@@ -156,5 +160,82 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
                     .centerCrop()
                     .into(avatar);
         }
+    }
+
+    public String getActionByEventType(String eventType, Payload payload) {
+        Resources res = mContext.getResources();
+        StringBuilder sb = new StringBuilder();
+        switch (eventType) {
+            case "PushEvent": {
+                String[] string = {
+                        makeStringBold(res.getQuantityString(R.plurals.pushed_commits, payload.size, payload.size)),
+                        mContext.getString(R.string.to),
+                        getBranchFromRef(payload.ref),
+                        mContext.getString(R.string.at)
+                };
+                return TextUtils.join(" ", Arrays.asList(string));
+            }
+            case "IssueCommentEvent": return makeStringBold(getIssueCommentAction(payload)) + " "
+                    + mContext.getString(R.string.on_issue_in);
+            case "PullRequestEvent": {
+                return makeStringBold(getPullRequestAction(payload) + " "
+                        + mContext.getString(R.string.pull_request)) + " "
+                        + mContext.getString(R.string.in);
+            }
+            case "CommitCommentEvent": return mContext.getString(R.string.commented_on_commit)
+                    + " " + mContext.getString(R.string.in);
+            case "IssuesEvent": return makeStringBold(payload.action) + " " + mContext.getString(R.string.issue_in);
+            case "CreateEvent": return makeStringBold(mContext.getString(R.string.created) + " " + payload.ref_tag) +
+                    " " + mContext.getString(R.string.in);
+            case "PullRequestReviewEvent":
+                return makeStringBold(getPullRequestReviewAction(payload)) + " "
+                    + mContext.getString(R.string.in);
+            case "PullRequestReviewCommentEvent":
+                return makeStringBold(getPullRequestReviewCommentAction(payload)) + " " +
+                    mContext.getString(R.string.in);
+        }
+        return eventType;
+    }
+
+    private String makeStringBold(String str) {
+        return "<b>" + str + "</b>";
+    }
+
+    private String getPullRequestReviewAction(Payload payload) {
+        switch (payload.action) {
+            case "submitted": return mContext.getString(R.string.pull_request_review_action_reviewed);
+            case "edited": return mContext.getString(R.string.pull_request_review_action_edited);
+            case "dismissed": return mContext.getString(R.string.pull_request_review_action_dismissed);
+        }
+        return null;
+    }
+
+    private String getPullRequestReviewCommentAction(Payload payload) {
+        switch (payload.action) {
+            case "created": return mContext.getString(R.string.pull_request_review_comment_commented);
+            case "edited": return mContext.getString(R.string.pull_request_review_comment_edited);
+            case "deleted": return mContext.getString(R.string.pull_request_review_comment_deleted);
+        }
+        return null;
+    }
+
+    public String getIssueCommentAction(Payload payload) {
+        if (payload.action.equals("created")) {
+            return mContext.getString(R.string.commented);
+        } else return payload.action  + mContext.getString(R.string.comment);
+    }
+
+    public String getPullRequestAction(Payload payload) {
+        if (payload.action.equals("closed")) {
+            if (payload.merged) return mContext.getString(R.string.merged);
+            else return mContext.getString(R.string.closed);
+        } else {
+            return payload.action;
+        }
+    }
+
+    public static String getBranchFromRef(String ref) {
+        String[] splitted = ref.split("/");
+        return splitted[splitted.length-1];
     }
 }
