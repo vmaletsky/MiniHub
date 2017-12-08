@@ -10,13 +10,17 @@ import android.util.Log;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.navigation.NavigationActivity;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainEmptyActivity extends AppCompatActivity {
     String TAG = getClass().getSimpleName();
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
         Intent intent;
         if (userLoggedIn()) {

@@ -25,11 +25,11 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
     private static final int REPOS_LOADER = 100;
     private String TAG = getClass().getSimpleName();
 
-    ReposAsyncTask task;
+    private ReposAsyncTask task;
 
-    Context mContext;
+    private Context mContext;
 
-    ReposAdapter mReposAdapter;
+    private ReposAdapter mReposAdapter;
 
     private LoaderManager mLoaderManager;
 
@@ -95,6 +95,9 @@ public class UserReposPresenter extends MvpBasePresenter<UserReposView> implemen
     }
 
     void onDestroyView() {
+        if (task != null && !task.isCancelled()) {
+            task.cancel(true);
+        }
         mLoaderManager.destroyLoader(REPOS_LOADER);
     }
 
