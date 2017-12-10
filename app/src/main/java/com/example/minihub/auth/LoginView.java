@@ -10,7 +10,5 @@ public interface LoginView extends MvpView {
 
     void openNavigationActivity();
 
-    void saveUserInfo(User user);
-
     String getAccessToken();
 }

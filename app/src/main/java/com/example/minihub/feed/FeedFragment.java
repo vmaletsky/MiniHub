@@ -90,7 +90,13 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
             }
         };
         mFeedList.addOnScrollListener(mScrollListener);
-
+        mFeedAdapter.mOnLastElementReachedListener = new FeedAdapter.OnLastElementReached() {
+            @Override
+            public void onLastElementReached() {
+                presenter.loadData(false, mPage + 1);
+                mPage += 1;
+            }
+        };
         mFeedList.setAdapter(mFeedAdapter);
         mRefreshFeed.setOnRefreshListener(this);
         return view;

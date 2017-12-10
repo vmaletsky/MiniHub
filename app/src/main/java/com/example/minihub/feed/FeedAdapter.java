@@ -52,9 +52,14 @@ import static com.example.minihub.network.FeedAsyncTask.ERROR_INCORRECT_DATA;
 import static com.example.minihub.network.FeedAsyncTask.ERROR_NO_NETWORK;
 
 public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolder> {
+    public interface OnLastElementReached {
+        void onLastElementReached();
+    }
+
     private String TAG = getClass().getSimpleName();
     private Context mContext;
 
+    public OnLastElementReached mOnLastElementReachedListener;
 
     private LayoutInflater mInflater;
 
@@ -99,6 +104,9 @@ public class FeedAdapter extends RecyclerViewCursorAdapter<FeedAdapter.ViewHolde
             mCursorAdapter.getCursor().moveToPosition(position);
             setViewHolder(holder);
             mCursorAdapter.bindView(null, mContext, mCursorAdapter.getCursor());
+            if (position == mCursorAdapter.getCount() - 1) {
+                mOnLastElementReachedListener.onLastElementReached();
+            }
         }
     }
 

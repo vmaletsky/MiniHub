@@ -32,7 +32,7 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
                 mPreviousTotal = totalItemCount;
             }
         }
-        int visibleThreshold = 8;
+        int visibleThreshold = 10;
         if (!mLoading && (totalItemCount - visibleItemCount)
                 <= (firstVisibleItem + visibleThreshold) && dy > 0) {
             // End has been reached
@@ -43,10 +43,12 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         }
     }
 
+
     public void reset(int previousTotal, boolean loading) {
         this.mPreviousTotal = previousTotal;
         this.mLoading = loading;
     }
+
 
     public abstract void onLoadMore();
 }

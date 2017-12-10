@@ -10,6 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -24,14 +26,12 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NavigationActivity extends MvpActivity<NavigationView, NavigationPresenter> implements NavigationView {
-    @BindView(R.id.drawer_layout)
+public class NavigationActivity extends MvpActivity<NavigationView, NavigationPresenter> implements NavigationView, AdapterView.OnItemClickListener {
+
     public DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.navigation_view)
     public android.support.design.widget.NavigationView mNavigationView;
 
-    @BindView(R.id.menu_items)
     ListView mMenuItems;
 
 
@@ -45,6 +45,9 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerLayout =(DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (android.support.design.widget.NavigationView) findViewById(R.id.navigation_view);
+        mMenuItems = (ListView) findViewById(R.id.menu_items);
         if (mNavigationView != null) {
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
 
@@ -61,6 +64,7 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
             String[] menuItems = getResources().getStringArray(R.array.menu_items);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, menuItems);
             mMenuItems.setAdapter(adapter);
+            mMenuItems.setOnItemClickListener(this);
         }
         mFeedFragment = new FeedFragment();
         mFragmentManager = getSupportFragmentManager();
@@ -73,7 +77,9 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        if (mDrawerToggle != null) {
+            mDrawerToggle.syncState();
+        }
     }
 
     @NonNull
@@ -87,7 +93,8 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         // Pass the event to ActionBarDrawerToggle
         // If it returns true, then it has handled
         // the nav drawer indicator touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -118,7 +125,6 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         UserReposFragment repositoriesFragment = new UserReposFragment();
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, repositoriesFragment)
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -126,8 +132,6 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     public void showUserInfo() {
         UserInfoFragment userInfoFragment = new UserInfoFragment();
         mFragmentManager.beginTransaction()
-                .replace(R.id.feed_container, userInfoFragment)
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -146,5 +150,15 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     public void openLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0: showFeed(); break;
+            case 1: showRepositoriesList(); break;
+            case 2: showUserInfo(); break;
+            case 3: logout(); break;
+        }
     }
 }

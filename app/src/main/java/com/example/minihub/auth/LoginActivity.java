@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -16,17 +17,23 @@ import com.example.minihub.R;
 import com.example.minihub.domain.AccessToken;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 
     private static String CLIENT_ID = "651300e25050131ec8ef";
     private static String CLIENT_SECRET = "04e7098776e98846d0170429971b847d2fbc8ad0";
     private static String REDIRECT_URI = "minihub://callback";
 
+    @BindView(R.id.login_button)
+    Button loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button loginButton = (Button) findViewById(R.id.login_button);
+        ButterKnife.bind(this);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +54,6 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         Uri uri = getIntent().getData();
         if (uri != null && uri.toString().startsWith(REDIRECT_URI)) {
-            // use the parameter your API exposes for the code (mostly it's "code")
             String code = uri.getQueryParameter("code");
             if (code != null) {
                 presenter.requestAuthToken(code);
@@ -74,7 +80,8 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     @NonNull
     @Override
     public LoginPresenter createPresenter() {
-        return new LoginPresenter();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        return new LoginPresenter(sp, this);
     }
 
     @Override
@@ -84,13 +91,4 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         return token;
     }
 
-    @Override
-    public void saveUserInfo(User user) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(getString(R.string.current_user_name), user.name)
-                .putString(getString(R.string.current_user_login), user.login)
-                .putString(getString(R.string.current_user_avatar_url), user.avatarUrl)
-                .apply();
-    }
 }
