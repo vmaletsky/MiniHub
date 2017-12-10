@@ -36,6 +36,7 @@
     <string name="on_issue_in">on issue in</string>
     <string name="to">to</string>
     <string name="at">at</string>
+    <string name="empty_string">List is empty</string>
     <plurals name="pushed_commits">
         <item quantity="one"> pushed %d commit </item>
         <item quantity="other"> pushed %d commits </item>

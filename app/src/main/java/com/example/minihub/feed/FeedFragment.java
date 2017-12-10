@@ -84,7 +84,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
-                Log.v(TAG, "onLoadMore");
                 presenter.loadData(false, mPage + 1);
                 mPage += 1;
             }
