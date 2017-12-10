@@ -10,6 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.minihub.R;
 import com.example.minihub.auth.LoginActivity;
@@ -29,6 +31,10 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     @BindView(R.id.navigation_view)
     public android.support.design.widget.NavigationView mNavigationView;
 
+    @BindView(R.id.menu_items)
+    ListView mMenuItems;
+
+
     private ActionBarDrawerToggle mDrawerToggle;
 
     FragmentManager mFragmentManager;
@@ -39,17 +45,23 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
+        if (mNavigationView != null) {
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
 
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mNavigationView.setNavigationItemSelectedListener(new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectMenuItem(item);
-                return true;
-            }
-        });
+            // Set the drawer toggle as the DrawerListener
+            mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mNavigationView.setNavigationItemSelectedListener(new android.support.design.widget.NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    selectMenuItem(item);
+                    return true;
+                }
+            });
+        } else {
+            String[] menuItems = getResources().getStringArray(R.array.menu_items);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, menuItems);
+            mMenuItems.setAdapter(adapter);
+        }
         mFeedFragment = new FeedFragment();
         mFragmentManager = getSupportFragmentManager();
 
