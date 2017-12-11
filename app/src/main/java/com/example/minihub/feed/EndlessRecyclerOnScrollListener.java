@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+/* https://github.com/shandilyaaman/SampleEndlessRecyclerView/blob/master/SampleEndlessRecyclerView/endlessrecyclerview/src/main/java/com/endlessrecyclerview/android/EndlessRecyclerOnScrollListener.java */
+
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
     /**
      * The total number of items in the dataset after the last load
