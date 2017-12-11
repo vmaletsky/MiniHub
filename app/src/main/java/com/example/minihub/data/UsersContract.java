@@ -25,9 +25,9 @@ public final class UsersContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USERS;
 
 
-        public static final String COLUMN_USER_ID = "id";
+        public static final String COLUMN_USER_ID = "user_id";
 
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "user_name";
 
         public static final String COLUMN_LOGIN = "login";
 

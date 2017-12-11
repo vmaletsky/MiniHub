@@ -1,8 +1,13 @@
 package com.example.minihub.widget;
 
-/**
- * Created by v.maletskiy on 12/11/2017.
- */
+import android.content.Intent;
+import android.widget.RemoteViewsService;
 
-public class GithubRemoteViewsService {
+
+
+public class GithubRemoteViewsService extends RemoteViewsService {
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new GithubRemoteViewsFactory(this.getApplicationContext(), intent);
+    }
 }

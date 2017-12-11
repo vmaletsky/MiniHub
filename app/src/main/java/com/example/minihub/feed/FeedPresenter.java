@@ -20,6 +20,7 @@ import com.example.minihub.domain.FeedEvent;
 import com.example.minihub.domain.Repository;
 import com.example.minihub.domain.User;
 import com.example.minihub.network.FeedAsyncTask;
+import com.example.minihub.widget.CollectionAppWidgetProvider;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.HashMap;
@@ -76,20 +77,20 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
     }
 
 
-    static final int COL_EVENT_ID = 0;
-    static final int COL_EVENT_TYPE = 1;
-    static final int COL_USER_ID = 2;
-    static final int COL_CREATED_AT = 3;
-    static final int COL_REPO_ID = 4;
-    static final int COL_ACTION = 5;
-    static final int COL_REF_TAG = 6;
-    static final int COL_REF = 7;
-    static final int COL_SIZE = 8;
-    static final int COL_MERGED = 9;
-    static final int COL_USER_NAME = 10;
-    static final int COL_AVATAR_URL = 11;
-    static final int COL_USER_LOGIN = 12;
-    static final int COL_REPO_NAME = 13;
+    public static final int COL_EVENT_ID = 0;
+    public static final int COL_EVENT_TYPE = 1;
+    public static final int COL_USER_ID = 2;
+    public static final int COL_CREATED_AT = 3;
+    public static final int COL_REPO_ID = 4;
+    public static final int COL_ACTION = 5;
+    public static final int COL_REF_TAG = 6;
+    public static final int COL_REF = 7;
+    public static final int COL_SIZE = 8;
+    public static final int COL_MERGED = 9;
+    public static final int COL_USER_NAME = 10;
+    public static final int COL_AVATAR_URL = 11;
+    public static final int COL_USER_LOGIN = 12;
+    public static final int COL_REPO_NAME = 13;
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         mLoaderManager.initLoader(FEED_LOADER, null, this);
@@ -109,6 +110,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
             @Override
             public void onLoaded(List<FeedEvent> events) {
                 cacheEvents(events, isRefreshing);
+                CollectionAppWidgetProvider.sendRefreshBroadcast(mContext);
             }
         };
         mFeedAsyncTask.mErrorListener = new FeedAsyncTask.OnError() {

@@ -28,11 +28,11 @@ public final class RepoContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REPOS;
 
 
-        public static final String COLUMN_REPO_ID = "id";
+        public static final String COLUMN_REPO_ID = "repo_id";
 
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "repo_name";
 
-        public static final String COLUMN_USER_ID = "user_id";
+        public static final String COLUMN_USER_ID = "repo_user_id";
 
         public static final String COLUMN_LANGUAGE = "language";
 

@@ -26,9 +26,9 @@ public final class EventsContract {
 
         public static final String TABLE_NAME = "events";
 
-        public static final String COLUMN_EVENT_ID = "id";
+        public static final String COLUMN_EVENT_ID = "event_id";
 
-        public static final String COLUMN_TYPE = "name";
+        public static final String COLUMN_TYPE = "event_name";
 
         public static final String COLUMN_USER_ID = "user_id";
 

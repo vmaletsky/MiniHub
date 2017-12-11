@@ -4,15 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Daryna on 03.09.17.
- */
 
 public class GithubDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "minihub.db";
 
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
 
     public GithubDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
