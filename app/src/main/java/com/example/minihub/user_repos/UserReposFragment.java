@@ -91,10 +91,7 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null) {
-            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-            mReposList.getLayoutManager().onRestoreInstanceState(mListState);
-        } else {
+        if (savedInstanceState == null) {
             presenter.loadRepos();
         }
     }
