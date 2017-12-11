@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
@@ -37,12 +38,15 @@ import static com.example.minihub.network.FeedAsyncTask.ERROR_NO_NETWORK;
 
 public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         implements FeedView, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+    private static final String LIST_STATE_KEY = "LIST_STATE";
     String TAG = getClass().getSimpleName();
     @BindView(R.id.feed_list)
     public RecyclerView mFeedList;
     public FeedAdapter mFeedAdapter;
 
+    LinearLayoutManager mLayoutManager;
 
+    Parcelable mListState;
 
     EndlessRecyclerOnScrollListener mScrollListener;
 
@@ -67,6 +71,11 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+       mListState = mLayoutManager.onSaveInstanceState();
+       outState.putParcelable(LIST_STATE_KEY, mListState);
+    }
 
 
     @Override
@@ -79,8 +88,8 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         mPage = 1;
         mFeedAdapter = new FeedAdapter(getActivity());
         Log.v(TAG, String.valueOf(mFeedAdapter.getItemCount()));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mFeedList.setLayoutManager(layoutManager);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mFeedList.setLayoutManager(mLayoutManager);
         mScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
@@ -104,6 +113,9 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         presenter.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        }
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -111,6 +123,9 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
     @Override
     public void onResume() {
         super.onResume();
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
         presenter.loadData(true, 0);
         mScrollListener.reset(0, true);
     }

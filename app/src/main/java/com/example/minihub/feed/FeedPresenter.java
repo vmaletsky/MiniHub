@@ -36,6 +36,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
 
     private FeedAdapter mFeedAdapter;
 
+
     private Context mContext;
 
     private LoaderManager mLoaderManager;
