@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "721328140074",
+    "firebase_url": "https://minihub-8eb7d.firebaseio.com",
+    "project_id": "minihub-8eb7d",
+    "storage_bucket": "minihub-8eb7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721328140074:android:af934e77ea314f1a",
+        "android_client_info": {
+          "package_name": "com.example.minihub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721328140074-l5a01074rev29vb247pjfs4p5imb0n2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.minihub",
+            "certificate_hash": "9c7341ad0a4e7d0bfadd9911842fc13158f89136"
+          }
+        },
+        {
+          "client_id": "721328140074-v6q4tgd2chrs6lngfreqc85v61evgvfb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.minihub",
+            "certificate_hash": "3ec88881475a615cd3cdb61d695d5aec377325ad"
+          }
+        },
+        {
+          "client_id": "721328140074-4mde6a0moicsbtrtrf5tok0j7ikc7jml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjnL0G7ozoLy3_ms3TQCTiRpeuM2FUsLg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721328140074-4mde6a0moicsbtrtrf5tok0j7ikc7jml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

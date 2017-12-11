@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/black" >
+    android:background="@android:color/white" >
 
     <!-- ListView to be shown on widget -->
     <ListView
@@ -18,8 +18,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/empty_string"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </LinearLayout>
