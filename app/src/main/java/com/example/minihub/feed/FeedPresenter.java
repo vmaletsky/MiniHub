@@ -1,14 +1,15 @@
 package com.example.minihub.feed;
 
-import android.app.LoaderManager;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -59,7 +60,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
     };
 
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sortOrder = EventsContract.EventColumns.COLUMN_CREATED_AT + " DESC";
 
         Uri eventsUri = EventsContract.EventColumns.CONTENT_URI;
@@ -73,7 +74,7 @@ public class FeedPresenter extends MvpBasePresenter<FeedView> implements LoaderM
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
             mFeedAdapter.swapCursor(null);
     }
 

@@ -57,7 +57,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @Override
     public FeedPresenter createPresenter() {
-        return new FeedPresenter(getActivity(), mFeedAdapter, getActivity().getLoaderManager());
+        return new FeedPresenter(getActivity(), mFeedAdapter, getActivity().getSupportLoaderManager());
     }
 
     @Override

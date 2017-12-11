@@ -125,7 +125,7 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
     @Override
     public UserReposPresenter createPresenter() {
-        return new UserReposPresenter(getContext(), mAdapter, getActivity().getLoaderManager());
+        return new UserReposPresenter(getContext(), mAdapter, getActivity().getSupportLoaderManager());
     }
 
     @Override
