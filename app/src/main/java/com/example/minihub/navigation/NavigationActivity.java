@@ -2,12 +2,12 @@ package com.example.minihub.navigation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +18,10 @@ import android.widget.ListView;
 import com.example.minihub.R;
 import com.example.minihub.auth.LoginActivity;
 import com.example.minihub.feed.FeedFragment;
-import com.example.minihub.network.FeedAsyncTask;
 import com.example.minihub.user_info.UserInfoFragment;
 import com.example.minihub.user_repos.UserReposFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NavigationActivity extends MvpActivity<NavigationView, NavigationPresenter> implements NavigationView, AdapterView.OnItemClickListener {
@@ -33,7 +31,6 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     public android.support.design.widget.NavigationView mNavigationView;
 
     ListView mMenuItems;
-
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -48,6 +45,7 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         mDrawerLayout =(DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (android.support.design.widget.NavigationView) findViewById(R.id.navigation_view);
         mMenuItems = (ListView) findViewById(R.id.menu_items);
+        mFragmentManager = getSupportFragmentManager();
         if (mNavigationView != null) {
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0);
 
@@ -66,12 +64,21 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
             mMenuItems.setAdapter(adapter);
             mMenuItems.setOnItemClickListener(this);
         }
-        mFeedFragment = new FeedFragment();
-        mFragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            mFeedFragment = new FeedFragment();
+            mUserInfoFragment = new UserInfoFragment();
+            mUserReposFragment = new UserReposFragment();
 
-        mFragmentManager.beginTransaction()
-                .replace(R.id.feed_container, mFeedFragment, null)
-                .commit();
+
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.feed_container, mFeedFragment, null)
+                    .commit();
+        } else {
+            //Restore the fragment's instance
+            mFeedFragment = (FeedFragment) getSupportFragmentManager().getFragment(savedInstanceState, "FeedFragment");
+            mUserReposFragment = (UserReposFragment) getSupportFragmentManager().getFragment(savedInstanceState, "UserReposFragment");
+            mUserInfoFragment = (UserInfoFragment) getSupportFragmentManager().getFragment(savedInstanceState, "UserInfoFragment");
+        }
     }
 
     @Override
@@ -104,7 +111,24 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mFeedFragment != null && mFeedFragment.isAdded()) {
+            mFragmentManager.putFragment(outState, "FeedFragment", mFeedFragment);
+        }
+        if (mUserInfoFragment != null && mUserInfoFragment.isAdded()) {
+            mFragmentManager.putFragment(outState, "UserInfoFragment", mUserInfoFragment);
+        }
+        if (mUserReposFragment != null && mUserReposFragment.isAdded()) {
+            mFragmentManager.putFragment(outState, "UserReposFragment", mUserReposFragment);
+        }
+    }
+
+    @Override
     public void showFeed() {
+        if (mFeedFragment == null) {
+            mFeedFragment = new FeedFragment();
+        }
         mFragmentManager.beginTransaction()
                 .replace(R.id.feed_container, mFeedFragment)
                 .commit();
@@ -120,18 +144,27 @@ public class NavigationActivity extends MvpActivity<NavigationView, NavigationPr
         mDrawerLayout.closeDrawers();
     }
 
+    UserReposFragment mUserReposFragment;
+
     @Override
     public void showRepositoriesList() {
-        UserReposFragment repositoriesFragment = new UserReposFragment();
+        if (mUserReposFragment == null) {
+            mUserReposFragment = new UserReposFragment();
+        }
         mFragmentManager.beginTransaction()
-                .replace(R.id.feed_container, repositoriesFragment)
+                .replace(R.id.feed_container, mUserReposFragment)
                 .commit();
     }
 
+    UserInfoFragment mUserInfoFragment;
+
     @Override
     public void showUserInfo() {
-        UserInfoFragment userInfoFragment = new UserInfoFragment();
+        if (mUserInfoFragment == null) {
+            mUserInfoFragment = new UserInfoFragment();
+        }
         mFragmentManager.beginTransaction()
+                .replace(R.id.feed_container, mUserInfoFragment)
                 .commit();
     }
 

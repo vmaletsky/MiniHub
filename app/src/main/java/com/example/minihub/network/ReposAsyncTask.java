@@ -50,6 +50,7 @@ public class ReposAsyncTask extends AsyncTask<String, Void, List<Repository>> {
         List<Repository> repos = new ArrayList<>();
         try {
             Response<List<Repository>> response = service.getWatchedRepos().execute();
+            Log.v(TAG, "!!!!!!!!!!!!!!!!!!!LOADING REPOS DATA!!!!!!!!!!!!!!!!!!!!");
             if (response.isSuccessful()) {
                 repos = response.body();
             } else {

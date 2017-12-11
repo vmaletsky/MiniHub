@@ -34,10 +34,6 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
 
     CircleImageView mUserAvatar;
 
-    public UserInfoFragment() {
-
-    }
-
     @Override
     public UserInfoPresenter createPresenter() {
         return new UserInfoPresenter();
@@ -84,7 +80,7 @@ public class UserInfoFragment extends MvpFragment<UserInfoView, UserInfoPresente
     }
 
     @Override
-    public User getCurrentUser() { // TODO: this is bad
+    public User getCurrentUser() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         String userName = sp.getString(getString(R.string.current_user_name), null);
         String userLogin = sp.getString(getString(R.string.current_user_login), null);

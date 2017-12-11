@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'key_release'
             keyPassword '123456'
-            storeFile file('~/keystore.jks')
+            storeFile file('keystore.jks')
             storePassword '123456'
         }
     }

@@ -2,6 +2,7 @@ package com.example.minihub.user_repos;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
@@ -10,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.example.minihub.domain.Repository;
 import com.example.minihub.network.FeedAsyncTask;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,6 +28,7 @@ import butterknife.ButterKnife;
 
 public class UserReposFragment extends MvpFragment<UserReposView, UserReposPresenter> implements UserReposView, View.OnClickListener {
 
+    private static final String LIST_STATE_KEY = "LIST_STATE_REPOS";
     String TAG = getClass().getSimpleName();
 
     ReposAdapter mAdapter;
@@ -38,6 +38,8 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
 
     @BindView(R.id.refresh_repos)
     SwipeRefreshLayout mLayoutRepos;
+    private Parcelable mListState;
+    LinearLayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,19 +56,29 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
         });
         mAdapter = new ReposAdapter(getContext());
         mReposList.setAdapter(mAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mReposList.setLayoutManager(layoutManager);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mReposList.setLayoutManager(mLayoutManager);
         mReposList.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mReposList.getContext(),
-                layoutManager.getOrientation());
+                mLayoutManager.getOrientation());
         mReposList.addItemDecoration(dividerItemDecoration);
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        if (mListState != null) {
+            mReposList.getLayoutManager().onRestoreInstanceState(mListState);
+        }
         presenter.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mListState = mReposList.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, mListState);
     }
 
     @Override
@@ -79,12 +91,21 @@ public class UserReposFragment extends MvpFragment<UserReposView, UserReposPrese
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.loadRepos();
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            mReposList.getLayoutManager().onRestoreInstanceState(mListState);
+        } else {
+            presenter.loadRepos();
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            mReposList.getLayoutManager().onRestoreInstanceState(mListState);
+        }
         presenter.onActivityCreated(savedInstanceState);
     }
 

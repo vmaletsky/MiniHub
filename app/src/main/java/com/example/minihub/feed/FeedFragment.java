@@ -46,7 +46,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     LinearLayoutManager mLayoutManager;
 
-    Parcelable mListState;
+    private Parcelable mListState;
 
     EndlessRecyclerOnScrollListener mScrollListener;
 
@@ -54,11 +54,6 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @BindView(R.id.refresh_feed)
     public SwipeRefreshLayout mRefreshFeed;
-
-
-    public FeedFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public FeedPresenter createPresenter() {
@@ -73,8 +68,9 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-       mListState = mLayoutManager.onSaveInstanceState();
-       outState.putParcelable(LIST_STATE_KEY, mListState);
+        mListState = mFeedList.getLayoutManager().onSaveInstanceState();
+
+        outState.putParcelable(LIST_STATE_KEY, mListState);
     }
 
 
@@ -112,11 +108,14 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        presenter.onActivityCreated(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            mFeedList.getLayoutManager().onRestoreInstanceState(mListState);
+        } else {
+            presenter.loadData(true, 0);
         }
-        super.onActivityCreated(savedInstanceState);
+        presenter.onActivityCreated(savedInstanceState);
     }
 
 
@@ -126,7 +125,7 @@ public class FeedFragment extends MvpFragment<FeedView, FeedPresenter>
         if (mListState != null) {
             mLayoutManager.onRestoreInstanceState(mListState);
         }
-        presenter.loadData(true, 0);
+   //     presenter.loadData(true, 0);
         mScrollListener.reset(0, true);
     }
 

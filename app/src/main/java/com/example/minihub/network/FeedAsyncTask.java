@@ -68,6 +68,7 @@ public class FeedAsyncTask extends AsyncTask<String, Void, List<FeedEvent>> {
         List<FeedEvent> events = new ArrayList<>();
         try {
             Response<List<FeedEvent>> response = service.getUserEvents(username, mPage, 10).execute();
+            Log.v(TAG, "!!!!!!!!!!!!!!!!!!!LOADING DATA!!!!!!!!!!!!!!!!!!!!");
             if (response.isSuccessful()) {
                 events = response.body();
             } else {
